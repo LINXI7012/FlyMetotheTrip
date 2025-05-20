@@ -1,0 +1,1719 @@
+/* Plans Page Styles */
+body.plans-page {
+    background-color: #f0eee8;
+    color: #333;
+}
+
+body.plans-page .fullscreen-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url('../images/plans.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+}
+
+.plans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px dotted #d8d2c4;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #5c5544;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    background: #a2977e;
+}
+
+.add-plan-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #a2977e;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.add-plan-btn:hover {
+    background-color: #8a816c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Journal Layout */
+.journal-container {
+    display: flex;
+    height: calc(100vh - 200px);
+    min-height: 500px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    perspective: 1500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+/* Book spine */
+.journal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.1) 0%, 
+        rgba(0, 0, 0, 0.2) 50%, 
+        rgba(0, 0, 0, 0.1) 100%);
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.journal-left {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: #f5f2e8;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h80v80H10z' fill='%23f8f6ee' fill-opacity='0.4'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40z' fill='%23e0dbd0' fill-opacity='0.1'/%3E%3C/svg%3E");
+    color: #333;
+    border-radius: 3px 0 0 3px;
+    box-shadow: inset -7px 0 9px -7px rgba(0,0,0,0.2);
+    transform-origin: right center;
+    transition: transform 0.5s ease;
+}
+
+.journal-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #eae8e1;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h80v80H10z' fill='%23f5f2e8' fill-opacity='0.4'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40z' fill='%23d8d5cc' fill-opacity='0.1'/%3E%3C/svg%3E");
+    color: #333;
+    border-radius: 0 3px 3px 0;
+    box-shadow: inset 7px 0 9px -7px rgba(0,0,0,0.2);
+    transform-origin: left center;
+    transition: transform 0.5s ease;
+}
+
+/* Notebook ruled lines for the left panel */
+.plan-details-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: 
+        linear-gradient(#e1decb 1px, transparent 1px);
+    background-size: 100% 28px;
+    background-position: 0 -1px;
+    position: relative;
+    padding-top: 2px;
+}
+
+/* Red margin line - notebook style */
+.plan-details-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 28px;
+    height: 100%;
+    width: 1px;
+    background-color: rgba(255, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.plan-details-content .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+}
+
+/* Notebook style tabs in Journal Layout */
+.journal-right .tabs {
+    display: flex;
+    background-color: #e0dbd0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 5;
+}
+
+.journal-right .tab-btn {
+    flex: 1;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+
+.journal-right .tab-btn:not(.active) {
+    border-right: 1px solid #ccc;
+}
+
+.journal-right .tab-btn.active {
+    background-color: #f5f2e8;
+    color: #333;
+    border-bottom: none;
+    z-index: 2;
+}
+
+.journal-right .tab-btn::after {
+    display: none;
+}
+
+.journal-right .tab-content {
+    display: none;
+    padding: 1.5rem;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.journal-right .tab-content.active {
+    display: block;
+}
+
+/* Plans in Journal Layout */
+.journal-right .plans-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Plan Card in Journal Layout - more notebook like */
+.journal-right .plan-card {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    padding: 1rem;
+    border: 1px solid #d8d2c4;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.journal-right .plan-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.journal-right .plan-card.active {
+    border: 1px solid #b0a895;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Plan Details Content - notebook style */
+.plan-details {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: #333;
+    z-index: 2;
+    position: relative;
+}
+
+.plan-details-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d8d2c4;
+}
+
+.plan-details-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+}
+
+.plan-details-dates {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.plan-details-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 40px; /* Space for the red line */
+    z-index: 2;
+}
+
+.plan-details-section {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.plan-details-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5rem;
+}
+
+.plan-details-section h3::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 18px;
+    background: #c0b6a1;
+    border-radius: 2px;
+    margin-right: 0.5rem;
+}
+
+/* Task list styling - more like a handwritten list */
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    padding: 0.5rem;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.task-item:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.task-checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 0.8rem;
+    cursor: pointer;
+}
+
+.task-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.task-checkbox:hover input ~ .checkmark {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.task-checkbox input:checked ~ .checkmark {
+    background: #a2977e;
+    border-color: #8f856f;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.task-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.task-checkbox .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.task-text {
+    font-size: 1rem;
+    color: #444;
+    transition: all 0.3s ease;
+}
+
+.task-item.completed .task-text {
+    color: #888;
+    text-decoration: line-through;
+}
+
+/* Journal Pagination - like book page numbers */
+.journal-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.pagination-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f5f2e8;
+    border: 1px solid #d8d2c4;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #ede9df;
+    border-color: #c5baa8;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-indicator {
+    font-size: 1rem;
+    color: #555;
+    min-width: 60px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    background: #f5f2e8;
+    padding: 6px 10px;
+    border-radius: 12px;
+    border: 1px solid #d8d2c4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Empty state styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+    background: none;
+}
+
+.empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #a69d88;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.empty-state p {
+    color: #777;
+    max-width: 300px;
+}
+
+/* Progress bar in notebook style */
+.progress-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #a2977e;
+    border-radius: 5px;
+}
+
+/* Tabs */
+.tabs-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--accent-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-btn.active {
+    color: var(--text-light);
+}
+
+.tab-btn.active::after {
+    transform: scaleX(1);
+}
+
+.tab-content {
+    display: none;
+    padding: 2rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Plan Cards */
+.plans-container {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Trip Details Modal */
+.trip-details-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 95%;
+    max-width: 1200px;
+    background: var(--main-color);
+    border-radius: 15px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.trip-details-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--highlight-color);
+}
+
+.modal-content {
+    padding: 30px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 35, 66, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Trip Info */
+.trip-info {
+    margin-bottom: 2rem;
+}
+
+.trip-dates {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.date-item {
+    text-align: center;
+}
+
+.date-label {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+}
+
+.date-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.date-separator {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to right, var(--accent-color), var(--highlight-color));
+    margin: 0 20px;
+    position: relative;
+}
+
+.date-separator::before, .date-separator::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.date-separator::before {
+    left: -5px;
+}
+
+.date-separator::after {
+    right: -5px;
+    background: var(--highlight-color);
+}
+
+.trip-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.meta-icon {
+    font-size: 1.5rem;
+}
+
+.meta-text {
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+/* Trip Sections */
+.section-tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+}
+
+.section-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.section-tab {
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.section-tab.active {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    margin-bottom: -2px;
+}
+
+.section-content {
+    display: none;
+}
+
+.section-content.active {
+    display: block;
+}
+
+/* Timeline Section */
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.day-timeline {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timeline-day-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(10, 35, 66, 0.4);
+}
+
+.day-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-right: 1rem;
+}
+
+.day-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    flex-grow: 1;
+}
+
+.day-date {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.timeline-items {
+    padding: 1rem 1.5rem;
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 50px;
+    height: calc(100% + 1.5rem);
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+}
+
+.timeline-item:last-child::before {
+    display: none;
+}
+
+.timeline-time {
+    width: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-right: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-time::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: -12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    z-index: 2;
+}
+
+.timeline-content {
+    flex-grow: 1;
+}
+
+.timeline-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-notes {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.show-more-days {
+    align-self: center;
+    margin-top: 1rem;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Packing List Section */
+.packing-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.packing-category {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(10, 35, 66, 0.4);
+}
+
+.category-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.category-progress {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.packing-items {
+    list-style: none;
+    padding: 1rem 1.5rem;
+}
+
+.packing-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.packing-item:last-child {
+    margin-bottom: 0;
+}
+
+.item-checkbox {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.item-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.item-checkbox:hover input ~ .checkmark {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.item-checkbox input:checked ~ .checkmark {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.item-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.item-checkbox .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.item-name {
+    font-size: 1rem;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+.packing-item.checked .item-name {
+    color: var(--text-dim);
+    text-decoration: line-through;
+}
+
+.add-item-btn {
+    align-self: flex-start;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Budget Section */
+.budget-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.budget-summary {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.budget-amount {
+    margin-bottom: 1.5rem;
+}
+
+.amount-label {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+}
+
+.amount-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.budget-progress {
+    width: 100%;
+    max-width: 400px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.progress-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 5px;
+}
+
+.budget-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.budget-category {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.category-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+.category-details {
+    flex-grow: 1;
+}
+
+.category-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.category-allocation {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.currency-converter {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.currency-converter h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.converter-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.converter-input {
+    display: flex;
+}
+
+.converter-input input {
+    width: 100px;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px 0 0 5px;
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+}
+
+.converter-input select {
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+}
+
+.converter-equals {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+/* Contacts Section */
+.contacts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.emergency-contacts, .accommodations-contacts {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+.contacts-container h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.contact-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+}
+
+.contact-details {
+    flex-grow: 1;
+}
+
+.contact-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.contact-number, .contact-address {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* Guide Badge */
+.plan-badge {
+    display: inline-block;
+    background-color: var(--highlight-color);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+    transform: translateY(-2px);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2rem;
+        margin-top: 25px;
+        padding-top: 10px;
+    }
+    
+    .trip-dates {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .date-separator {
+        width: 2px;
+        height: 40px;
+        margin: 0;
+    }
+    
+    .date-separator::before, .date-separator::after {
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+    
+    .date-separator::before {
+        top: -5px;
+    }
+    
+    .date-separator::after {
+        top: auto;
+        bottom: -5px;
+    }
+    
+    .trip-meta {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .section-tab {
+        padding: 1rem;
+    }
+    
+    /* Journal Layout Responsive */
+    .journal-container {
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+    }
+    
+    .journal-left, .journal-right {
+        width: 100%;
+        border-right: none;
+    }
+    
+    .journal-left {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        order: 2;
+        min-height: 400px;
+    }
+    
+    .journal-right {
+        order: 1;
+    }
+    
+    .journal-right .tab-content {
+        max-height: 300px;
+    }
+
+    /* 添加一个切换按钮，让用户可以在列表和详情间切换 */
+    .mobile-toggle-view {
+        display: flex;
+    }
+}
+
+@media (max-width: 576px) {
+    .plans-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .timeline-day-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .timeline-item {
+        flex-direction: column;
+    }
+    
+    .timeline-time {
+        margin-bottom: 0.5rem;
+    }
+    
+    .timeline-time::after {
+        display: none;
+    }
+    
+    .timeline-item::before {
+        display: none;
+    }
+    
+    .budget-categories {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Journal Layout Small Screens */
+    .journal-pagination {
+        margin-top: 0.5rem;
+    }
+    
+    .pagination-btn {
+        min-width: 36px;
+        height: 36px;
+    }
+    
+    .plan-details-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    /* Fix journal display issue */
+    .journal-container {
+        flex-direction: column-reverse;
+        max-height: none;
+    }
+    
+    /* Make sure journal sections are visible on mobile */
+    .journal-container::before,
+    .journal-container::after,
+    .journal-left::before,
+    .journal-left::after,
+    .journal-right::before,
+    .journal-right::after {
+        display: none;
+    }
+    
+    /* Fix font sizes for sections */
+    .plan-details-section h3,
+    .guide-section h3,
+    .guide-destination h3,
+    .guide-highlights h3 {
+        font-size: 1.2rem;
+    }
+    
+    .plan-details-section p,
+    .guide-section p,
+    .guide-destination p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .guide-day-card {
+        flex-direction: column;
+    }
+    
+    /* Fix padding for guides list */
+    .guide-daily-plan-container {
+        padding: 10px 5px;
+        margin: 10px 0;
+    }
+    
+    /* Ensure content doesn't overflow */
+    .plan-details-body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    /* Ensure travel guide container fits mobile screens */
+    .travel-guide-container,
+    .guide-section,
+    .guide-destination,
+    .guide-highlights,
+    .guide-daily-plan {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .guide-day-details {
+        width: 100%;
+    }
+    
+    /* Fix tab button sizes */
+    .journal-right .tab-btn {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    /* Make guide button more visible */
+    .view-full-guide {
+        width: 100%;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    /* Ensure journal pages display at full width */
+    .journal-left, .journal-right {
+        width: 100%; 
+        max-width: none;
+        padding: 10px;
+        border-radius: 0;
+    }
+    
+    /* Ensure plan list is visible on mobile */
+    .journal-right .tab-content {
+        display: block !important;
+        opacity: 1 !important;
+        border: none;
+        width: 100%;
+        padding: 0;
+    }
+    
+    /* Plan cards should be clearly visible */
+    .journal-right .plan-card {
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+    /* Container should not have the journal styling on mobile */
+    .journal-container {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+/* Add notebook decorations */
+.journal-container::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    width: 120px;
+    height: 30px;
+    background-color: rgba(255, 217, 102, 0.8);
+    transform: rotate(5deg);
+    z-index: 20;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 2px;
+}
+
+/* Add a bookmark */
+.journal-right::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    right: 120px;
+    width: 30px;
+    height: 80px;
+    background-color: rgba(217, 102, 102, 0.8);
+    z-index: 21;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+}
+
+/* Add paper clip */
+.journal-left::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 12px;
+    height: 45px;
+    border: 2px solid #888;
+    border-radius: 3px 3px 0 0;
+    border-bottom: none;
+    z-index: 20;
+    transform: rotate(-5deg);
+}
+
+.journal-left::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    width: 12px;
+    height: 45px;
+    border: 2px solid #888;
+    border-radius: 3px 3px 0 0;
+    border-bottom: none;
+    z-index: 20;
+    transform: rotate(-5deg);
+}
+
+/* Handwriting style for some text */
+.plan-details-header h2 {
+    font-family: 'Caveat', cursive, 'Poppins', sans-serif;
+    font-size: 2.2rem;
+    transform: rotate(-1deg);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    margin-left: 10px;
+}
+
+/* 修改"查看完整攻略"和"删除攻略"按钮样式 */
+.btn-small.btn-highlight {
+    background-color: rgba(162, 151, 126, 0.7);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-small.btn-highlight:hover {
+    background-color: rgba(162, 151, 126, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+}
+
+.btn-small.btn-danger, .btn.btn-danger, #deleteGuideBtn {
+    background-color: rgba(217, 102, 102, 0.6);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-small.btn-danger:hover, .btn.btn-danger:hover, #deleteGuideBtn:hover {
+    background-color: rgba(217, 102, 102, 0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+}
+
+.delete-guide-from-modal {
+    background-color: rgba(217, 102, 102, 0.6);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.delete-guide-from-modal:hover {
+    background-color: rgba(217, 102, 102, 0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+}
+
+/* 修改行程亮点标题样式，使其更加柔和 */
+.guide-highlights h4 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: rgba(92, 85, 68, 0.85);
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 12px;
+    letter-spacing: 0.5px;
+    border-left: 3px solid rgba(162, 151, 126, 0.6);
+    transition: all 0.3s ease;
+}
+
+.guide-highlights h4:hover {
+    color: rgba(92, 85, 68, 1);
+    border-left-color: rgba(162, 151, 126, 0.9);
+}
+
+/* 专门针对plans界面中的旅行攻略显示优化 */
+.plan-details-section .guide-overview,
+.plan-details-section .guide-highlights {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* 确保guides列表在plan details中正确显示 */
+.plan-details-section .guide-highlights li {
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 576px) {
+    /* 特别处理plan details中的guide内容 */
+    .plan-details-section .guide-overview,
+    .plan-details-section .guide-highlights {
+        padding: 5px 0;
+    }
+    
+    /* 额外优化plans页面中的指南元素位置 */
+    .plan-details-body {
+        overflow-x: hidden;
+    }
+    
+    /* 确保列表内容完全适应容器 */
+    .plan-details-body ul, 
+    .plan-details-body ol {
+        padding-left: 20px;
+    }
+    
+    /* 优化行程细节在plans中的显示 */
+    .plan-details-section .guide-day-details {
+        width: 100%;
+        word-break: break-word;
+    }
+}
+
+/* Mobile toggle view button styling */
+.mobile-toggle-view {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mobile-toggle-view:hover {
+    transform: scale(1.05);
+    background-color: var(--highlight-color);
+}
+
+@media (max-width: 768px) {
+    .mobile-toggle-view {
+        display: flex;
+    }
+}
+
+/* 改进plan-card的样式，确保在移动设备上清晰可见 */
+.plan-card {
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 2px solid transparent;
+}
+
+.plan-card:hover, .plan-card:active {
+    transform: translateY(-3px);
+    border-color: var(--accent-color, #a2977e);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.guide-highlights p {
+    margin: 8px 0;
+    font-style: italic;
+    color: #666;
+}
+
+/* 确保在移动设备上显示正常 */
+@media (max-width: 576px) {
+    .plan-card {
+        margin-bottom: 15px;
+        border-width: 1px;
+    }
+    
+    .plan-card .plan-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .plan-card .plan-dates {
+        font-size: 0.9rem;
+    }
+    
+    .guide-highlights p {
+        font-size: 0.9rem;
+    }
+    
+    /* 使攻略列表容器总是可见 */
+    .plans-container {
+        display: block !important;
+        opacity: 1 !important;
+    }
+} 

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Wise - Personal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/personal.css">
+    <link rel="stylesheet" href="css/personal-journal-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/airplane-cursor.css">
+</head>
+<body class="personal-page">
+    <div class="fullscreen-bg"></div>
+    <nav class="side-nav">
+        <ul>
+            <li><a href="index.html" class="nav-item">Home</a></li>
+            <li><a href="create.html" class="nav-item">Create</a></li>
+            <li><a href="explore.html" class="nav-item">Explore</a></li>
+            <li><a href="personal.html" class="nav-item active">Personal</a></li>
+            <li><a href="plans.html" class="nav-item">Plans</a></li>
+        </ul>
+    </nav>
+    
+    <a href="index.html" class="back-nav">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5L5 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    
+    <div class="main-content">
+        <div class="personal-content">
+            <!-- Washi tape decorations -->
+            <div class="washi-tape washi-tape-1"></div>
+            <div class="washi-tape washi-tape-2"></div>
+            
+            <!-- Profile Sidebar -->
+            <div class="profile-sidebar">
+                <div class="profile-info">
+                    <h2>John Traveler</h2>
+                    <p>Travel enthusiast since 2018</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span>Countries</span>
+                        <span>12</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Cities</span>
+                        <span>37</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Trips</span>
+                        <span>24</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Plans</span>
+                        <span>5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="travel-map-section">
+                <h2>Travel Map</h2>
+                <div class="map-controls">
+                    <button id="mapReset" class="map-reset-button">Reset View</button>
+                </div>
+                <div id="map" class="map-container">
+                    <div class="map animate-fade-in">
+                        <img src="img/world map.png" alt="World Map" width="100%" height="auto" />
+                        <div class="map-pins">
+                            <!-- 巴黎：法国欧洲北部 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-paris tooltip" data-map-title="Paris" data-map-link="paris" data-map-image="1.png" data-location-id="1" style="top: 32%; left: 47%; z-index: 1000;"></a>
+                            
+                            <!-- 东京：日本东亚 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-tokyo tooltip" data-map-title="Tokyo" data-map-link="tokyo" data-map-image="2.png" data-location-id="2" style="top: 36%; left: 83%; z-index: 1000;"></a>
+                            
+                            <!-- 纽约：美国东海岸 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-newyork tooltip" data-map-title="New York" data-map-link="newyork" data-map-image="3.png" data-location-id="3" style="top: 35%; left: 27%; z-index: 1000;"></a>
+                            
+                            <!-- 巴厘岛：印尼 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-bali tooltip" data-map-title="Bali" data-map-link="bali" data-map-image="4.png" data-location-id="4" style="top: 57%; left: 76.5%; z-index: 1000;"></a>
+                            
+                            <!-- 罗马：意大利 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-rome tooltip" data-map-title="Rome" data-map-link="rome" data-map-image="5.png" data-location-id="5" style="top: 36%; left: 49.5%; z-index: 1000;"></a>
+                            
+                            <!-- 悉尼：澳大利亚东部 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-sydney tooltip" data-map-title="Sydney" data-map-link="sydney" data-map-image="1.png" data-location-id="6" style="top: 63%; left: 85%; z-index: 1000;"></a>
+                            
+                            <!-- 开罗：埃及 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-cairo tooltip" data-map-title="Cairo" data-map-link="cairo" data-map-image="2.png" data-location-id="7" style="top: 41%; left: 54%; z-index: 1000;"></a>
+                            
+                            <!-- 曼谷：泰国 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-bangkok tooltip" data-map-title="Bangkok" data-map-link="bangkok" data-map-image="3.png" data-location-id="8" style="top: 48%; left: 74%; z-index: 1000;"></a>
+                            
+                            <!-- 里约：巴西 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-rio tooltip" data-map-title="Rio de Janeiro" data-map-link="rio" data-map-image="4.png" data-location-id="9" style="top: 59%; left: 36%; z-index: 1000;"></a>
+                            
+                            <!-- 伦敦：英国 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-london tooltip" data-map-title="London" data-map-link="lundon" data-map-image="5.png" data-location-id="10" style="top: 30%; left: 45.5%; z-index: 1000;"></a>
+                            
+                            <!-- 洛杉矶：美国西海岸 -->
+                            <a href="javascript:void(0);" class="map-location-marker marker-la tooltip" data-map-title="Los Angeles" data-map-link="los Angeles" data-map-image="1.png" data-location-id="11" style="top: 38%; left: 18%; z-index: 1000;"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Section -->
+            <div class="travel-timeline-section">
+                <div class="timeline-header-container">
+                    <button id="addFootprint" class="add-footprint-btn">
+                        <i class="fas fa-plus"></i> 创建新旅程
+                    </button>
+                </div>
+                <div class="timeline-header">
+                    <h2>Travel Timeline</h2>
+                    <div class="timeline-navigation">
+                        <button id="timelineLeft" class="timeline-nav-btn disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="timelineRight" class="timeline-nav-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="timelineContainer" class="timeline-container">
+                    <!-- Timeline items will be generated via JS -->
+                    <div class="timeline-item active" data-id="1">
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="1">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/1.png" alt="Paris">
+                        <h3>Paris, France</h3>
+                        <div class="date">June 2023</div>
+                        <p>Explored the city of lights, visited the Eiffel Tower, and enjoyed French cuisine.</p>
+                    </div>
+                    <div class="timeline-item" data-id="2">
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="2">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/2.png" alt="Tokyo">
+                        <h3>Tokyo, Japan</h3>
+                        <div class="date">March 2023</div>
+                        <p>Immersed in Japanese culture, visited temples, and tried authentic sushi.</p>
+                    </div>
+                    <div class="timeline-item" data-id="3">
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="3">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/3.png" alt="New York">
+                        <h3>New York, USA</h3>
+                        <div class="date">December 2022</div>
+                        <p>Holiday season in the big apple. Visited Times Square and Central Park.</p>
+                    </div>
+                    <div class="timeline-item" data-id="4">
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="4">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/4.png" alt="Bali">
+                        <h3>Bali, Indonesia</h3>
+                        <div class="date">August 2022</div>
+                        <p>Relaxed on beautiful beaches and explored ancient temples.</p>
+                    </div>
+                    <div class="timeline-item" data-id="5">
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="5">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/5.png" alt="Rome">
+                        <h3>Rome, Italy</h3>
+                        <div class="date">May 2022</div>
+                        <p>Toured the Colosseum and Vatican City, enjoyed authentic Italian pizza.</p>
+                    </div>
+                    <div class="timeline-item" data-id="6">
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="6">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/Sydney.png" alt="Sydney">
+                        <h3>Sydney, Australia</h3>
+                        <div class="date">January 2022</div>
+                        <p>Saw the Opera House, enjoyed the beaches, and explored the outback.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Footprint Modal -->
+    <div class="modal" id="addFootprintModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加旅行足迹</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addFootprintForm">
+                    <div class="form-group">
+                        <label for="footprintLocation">目的地</label>
+                        <input type="text" id="footprintLocation" required placeholder="例如：巴黎、东京、纽约">
+                    </div>
+                    <div class="form-group">
+                        <label for="footprintCountry">国家/地区</label>
+                        <input type="text" id="footprintCountry" required placeholder="例如：法国、日本、美国">
+                    </div>
+                    <div class="form-group">
+                        <label for="footprintDate">旅行日期</label>
+                        <input type="month" id="footprintDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="footprintDescription">旅行描述</label>
+                        <textarea id="footprintDescription" rows="3" placeholder="分享您的旅行体验..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>地图位置（点击地图设置位置）</label>
+                        <div class="map-preview">
+                            <img src="img/world map.png" alt="World Map" id="positionMapPreview">
+                            <div id="positionMarker" class="position-marker"></div>
+                        </div>
+                        <input type="hidden" id="markerPositionTop" value="40">
+                        <input type="hidden" id="markerPositionLeft" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label>选择图标</label>
+                        <div class="icon-selector">
+                            <div class="icon-option selected">
+                                <img src="img/1.png" alt="Icon 1" data-icon="1.png">
+                            </div>
+                            <div class="icon-option">
+                                <img src="img/2.png" alt="Icon 2" data-icon="2.png">
+                            </div>
+                            <div class="icon-option">
+                                <img src="img/3.png" alt="Icon 3" data-icon="3.png">
+                            </div>
+                            <div class="icon-option">
+                                <img src="img/4.png" alt="Icon 4" data-icon="4.png">
+                            </div>
+                            <div class="icon-option">
+                                <img src="img/5.png" alt="Icon 5" data-icon="5.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">添加足迹</button>
+                        <button type="button" class="cancel-btn">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteFootprintModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>删除旅行足迹</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除这个旅行足迹吗？此操作无法撤销。</p>
+                <div class="form-actions">
+                    <button type="button" id="confirmDeleteBtn" class="delete-btn">确认删除</button>
+                    <button type="button" class="cancel-btn">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/airplane-cursor.js"></script>
+    <script>
+        // Ensure interactions work directly
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log("Direct implementation script running");
+            setTimeout(function() {
+                console.log("Implementing direct interactions for map markers and timeline items");
+                
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                const mapMarkers = document.querySelectorAll('.map-location-marker');
+                const timelineContainer = document.getElementById('timelineContainer');
+                const resetButton = document.getElementById('mapReset');
+                const leftNavBtn = document.getElementById('timelineLeft');
+                const rightNavBtn = document.getElementById('timelineRight');
+                
+                // 添加足迹和删除足迹相关元素
+                const addFootprintBtn = document.getElementById('addFootprint');
+                const addFootprintModal = document.getElementById('addFootprintModal');
+                const deleteFootprintModal = document.getElementById('deleteFootprintModal');
+                const addFootprintForm = document.getElementById('addFootprintForm');
+                const closeModalBtns = document.querySelectorAll('.close-modal');
+                const cancelBtns = document.querySelectorAll('.cancel-btn');
+                const iconOptions = document.querySelectorAll('.icon-option');
+                const positionMapPreview = document.getElementById('positionMapPreview');
+                const positionMarker = document.getElementById('positionMarker');
+                const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+                const deleteFootprintBtns = document.querySelectorAll('.delete-footprint-btn');
+                
+                let activeIndex = 0;
+                let footprintToDelete = null;
+                let selectedIcon = '1.png';
+                
+                // 打开添加足迹模态框
+                addFootprintBtn.addEventListener('click', function() {
+                    addFootprintModal.style.display = 'block';
+                });
+                
+                // 关闭所有模态框
+                function closeAllModals() {
+                    addFootprintModal.style.display = 'none';
+                    deleteFootprintModal.style.display = 'none';
+                }
+                
+                // 关闭按钮事件
+                closeModalBtns.forEach(btn => {
+                    btn.addEventListener('click', closeAllModals);
+                });
+                
+                // 取消按钮事件
+                cancelBtns.forEach(btn => {
+                    btn.addEventListener('click', closeAllModals);
+                });
+                
+                // 点击图标选择器
+                iconOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        // 移除所有选中状态
+                        iconOptions.forEach(opt => opt.classList.remove('selected'));
+                        // 添加当前选中状态
+                        this.classList.add('selected');
+                        // 获取选中的图标
+                        selectedIcon = this.querySelector('img').getAttribute('data-icon');
+                    });
+                });
+                
+                // 点击地图预览设置位置
+                positionMapPreview.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // 计算百分比位置
+                    const percentTop = (y / rect.height) * 100;
+                    const percentLeft = (x / rect.width) * 100;
+                    
+                    // 更新标记位置
+                    positionMarker.style.top = percentTop + '%';
+                    positionMarker.style.left = percentLeft + '%';
+                    
+                    // 更新隐藏字段
+                    document.getElementById('markerPositionTop').value = percentTop;
+                    document.getElementById('markerPositionLeft').value = percentLeft;
+                });
+                
+                // 提交添加足迹表单
+                addFootprintForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // 获取表单数据
+                    const location = document.getElementById('footprintLocation').value;
+                    const country = document.getElementById('footprintCountry').value;
+                    const date = document.getElementById('footprintDate').value;
+                    const description = document.getElementById('footprintDescription').value;
+                    const posTop = document.getElementById('markerPositionTop').value;
+                    const posLeft = document.getElementById('markerPositionLeft').value;
+                    
+                    // 格式化日期
+                    const dateObj = new Date(date);
+                    const formattedDate = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
+                    
+                    // 生成新的ID
+                    const newId = timelineItems.length + 1;
+                    
+                    // 添加到地图
+                    const mapPins = document.querySelector('.map-pins');
+                    const newMarker = document.createElement('a');
+                    newMarker.href = 'javascript:void(0);';
+                    newMarker.className = 'map-location-marker tooltip';
+                    newMarker.setAttribute('data-map-title', location);
+                    newMarker.setAttribute('data-map-link', location.toLowerCase());
+                    newMarker.setAttribute('data-map-image', selectedIcon);
+                    newMarker.setAttribute('data-location-id', newId);
+                    newMarker.style.top = posTop + '%';
+                    newMarker.style.left = posLeft + '%';
+                    newMarker.style.zIndex = '1000';
+                    mapPins.appendChild(newMarker);
+                    
+                    // 添加到时间线
+                    const newTimelineItem = document.createElement('div');
+                    newTimelineItem.className = 'timeline-item';
+                    newTimelineItem.setAttribute('data-id', newId);
+                    newTimelineItem.innerHTML = `
+                        <div class="item-actions">
+                            <button class="delete-footprint-btn" data-id="${newId}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <img src="img/${selectedIcon}" alt="${location}">
+                        <h3>${location}, ${country}</h3>
+                        <div class="date">${formattedDate}</div>
+                        <p>${description}</p>
+                    `;
+                    timelineContainer.appendChild(newTimelineItem);
+                    
+                    // 为新添加的元素添加事件监听器
+                    const newDeleteBtn = newTimelineItem.querySelector('.delete-footprint-btn');
+                    newDeleteBtn.addEventListener('click', function() {
+                        footprintToDelete = this.getAttribute('data-id');
+                        deleteFootprintModal.style.display = 'block';
+                    });
+                    
+                    newTimelineItem.addEventListener('click', function() {
+                        const index = Array.from(timelineContainer.children).indexOf(this);
+                        activateLocation(index);
+                    });
+                    
+                    newMarker.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const locationId = this.getAttribute('data-location-id');
+                        const index = Array.from(timelineItems).findIndex(
+                            item => item.getAttribute('data-id') === locationId
+                        );
+                        if (index !== -1) {
+                            activateLocation(index);
+                        }
+                    });
+                    
+                    // 重置表单并关闭模态框
+                    addFootprintForm.reset();
+                    closeAllModals();
+                    
+                    // 刷新事件监听器和索引
+                    updateElements();
+                });
+                
+                // 删除足迹按钮事件
+                deleteFootprintBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        footprintToDelete = this.getAttribute('data-id');
+                        deleteFootprintModal.style.display = 'block';
+                    });
+                });
+                
+                // 确认删除事件
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (!footprintToDelete) return;
+                    
+                    // 找到对应的时间线项和地图标记
+                    const timelineItem = document.querySelector(`.timeline-item[data-id="${footprintToDelete}"]`);
+                    const mapMarker = document.querySelector(`.map-location-marker[data-location-id="${footprintToDelete}"]`);
+                    
+                    // 删除元素
+                    if (timelineItem) timelineItem.remove();
+                    if (mapMarker) mapMarker.remove();
+                    
+                    // 关闭模态框
+                    closeAllModals();
+                    
+                    // 重置状态
+                    footprintToDelete = null;
+                    
+                    // 刷新事件监听器和索引
+                    updateElements();
+                });
+                
+                // 更新元素和事件监听器
+                function updateElements() {
+                    // 更新选择器获取最新元素
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    const mapMarkers = document.querySelectorAll('.map-location-marker');
+                    
+                    // 如果当前活动索引超出范围，重置为0
+                    if (activeIndex >= timelineItems.length) {
+                        activeIndex = 0;
+                    }
+                    
+                    // 更新导航按钮状态
+                    updateNavButtonsState();
+                }
+
+                // Function to activate location
+                function activateLocation(index) {
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    if (index < 0 || index >= timelineItems.length) {
+                        console.error('Invalid index:', index);
+                        return;
+                    }
+                    
+                    console.log('Direct activateLocation called with index:', index);
+                    activeIndex = index;
+                    
+                    // Deactivate all timeline items and map markers
+                    timelineItems.forEach(item => {
+                        item.classList.remove('active');
+                        item.classList.add('inactive');
+                    });
+                    
+                    mapMarkers.forEach(marker => {
+                        marker.classList.remove('active');
+                    });
+                    
+                    // Activate selected timeline item
+                    const activeItem = timelineItems[index];
+                    activeItem.classList.remove('inactive');
+                    activeItem.classList.add('active');
+                    
+                    // Activate corresponding map marker
+                    const locationId = activeItem.getAttribute('data-id');
+                    console.log('Looking for map marker with location ID:', locationId);
+                    const activeMarker = document.querySelector(`.map-location-marker[data-location-id="${locationId}"]`);
+                    
+                    if (activeMarker) {
+                        console.log('Found active marker, adding active class');
+                        activeMarker.classList.add('active');
+                    } else {
+                        console.error('No matching map marker found for locationId:', locationId);
+                    }
+                    
+                    // Scroll timeline to center active item
+                    if (timelineContainer) {
+                        const itemLeft = activeItem.offsetLeft;
+                        const itemWidth = activeItem.offsetWidth;
+                        const containerWidth = timelineContainer.offsetWidth;
+                        
+                        timelineContainer.scrollTo({
+                            left: itemLeft - (containerWidth / 2) + (itemWidth / 2),
+                            behavior: 'smooth'
+                        });
+                    }
+                    
+                    // Update navigation buttons state
+                    updateNavButtonsState();
+                }
+                
+                // Function to update navigation buttons state
+                function updateNavButtonsState() {
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    if (leftNavBtn) {
+                        leftNavBtn.classList.toggle('disabled', activeIndex === 0);
+                    }
+                    
+                    if (rightNavBtn) {
+                        rightNavBtn.classList.toggle('disabled', activeIndex === timelineItems.length - 1);
+                    }
+                }
+                
+                // Function to reset view
+                function resetView() {
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    timelineItems.forEach(item => {
+                        item.classList.remove('active', 'inactive');
+                    });
+                    
+                    mapMarkers.forEach(marker => {
+                        marker.classList.remove('active');
+                    });
+                    
+                    activeIndex = -1;
+                    updateNavButtonsState();
+                }
+                
+                // Add click event listeners to timeline items
+                timelineItems.forEach((item, index) => {
+                    item.addEventListener('click', function(e) {
+                        // 如果点击的是删除按钮，不执行激活操作
+                        if (e.target.closest('.delete-footprint-btn')) {
+                            return;
+                        }
+                        console.log('Direct timeline item click:', index);
+                        activateLocation(index);
+                    });
+                });
+                
+                // Add click event listeners to map markers
+                mapMarkers.forEach((marker) => {
+                    const locationId = marker.getAttribute('data-location-id');
+                    marker.addEventListener('click', function(e) {
+                        console.log('Direct map marker click with locationId:', locationId);
+                        e.preventDefault();
+                        
+                        // Find matching timeline item index
+                        const index = Array.from(timelineItems).findIndex(
+                            item => item.getAttribute('data-id') === locationId
+                        );
+                        
+                        console.log('Found matching timeline item index:', index);
+                        
+                        if (index !== -1) {
+                            activateLocation(index);
+                        }
+                    });
+                });
+                
+                // Add click event to reset button
+                if (resetButton) {
+                    resetButton.addEventListener('click', resetView);
+                }
+                
+                // Add click events to navigation buttons
+                if (leftNavBtn) {
+                    leftNavBtn.addEventListener('click', function() {
+                        if (activeIndex > 0) {
+                            activateLocation(activeIndex - 1);
+                        }
+                    });
+                }
+                
+                if (rightNavBtn) {
+                    rightNavBtn.addEventListener('click', function() {
+                        if (activeIndex < timelineItems.length - 1) {
+                            activateLocation(activeIndex + 1);
+                        }
+                    });
+                }
+                
+                // Initialize with first location active
+                activateLocation(0);
+            }, 500);
+        });
+    </script>
+    
+    <style>
+        /* 添加足迹按钮样式 */
+        .map-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        
+        .add-footprint-btn {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .add-footprint-btn:hover {
+            background-color: #2a5db0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-header-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        
+        /* 删除按钮样式 */
+        .item-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .timeline-item:hover .item-actions {
+            opacity: 1;
+        }
+        
+        .delete-footprint-btn {
+            background-color: rgba(220, 53, 69, 0.8);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-footprint-btn:hover {
+            background-color: rgb(220, 53, 69);
+            transform: scale(1.1);
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1100;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #f5f2e8;
+            margin: 50px auto;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            background-color: #3a7bd5;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #fff;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .submit-btn, .delete-btn {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2a5db0;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        
+        .delete-btn:hover {
+            background-color: #bd2130;
+        }
+        
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        /* 地图预览样式 */
+        .map-preview {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .map-preview img {
+            width: 100%;
+            display: block;
+        }
+        
+        .position-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #dc3545;
+            border: 2px solid white;
+            border-radius: 50%;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        /* 图标选择器样式 */
+        .icon-selector {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .icon-option {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .icon-option.selected {
+            border-color: #3a7bd5;
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</body>
+</html> 

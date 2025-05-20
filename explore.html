@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - DeepTrip</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/explore.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/airplane-cursor.css">
+    <link rel="stylesheet" href="css/travel-guide-journal-style.css">
+    <style>
+        /* Override the existing point-dot styles to create star shapes */
+        .point-dot {
+            width: 7px !important;
+            height: 7px !important;
+            background-color: #FFEA00 !important;
+            border-radius: 50% !important;
+            position: relative;
+            display: inline-block;
+            margin: 0;
+            box-shadow: 0 0 18px 8px rgba(255, 235, 0, 0.95) !important;
+            border: none !important;
+            transform: none !important;
+            filter: none !important;
+            z-index: 10 !important;
+        }
+        
+        .point-dot:before, .point-dot:after {
+            display: none !important;
+        }
+        
+        /* Preserve hover effects while changing colors */
+        .map-point:hover .point-dot {
+            background-color: #FFF200 !important;
+            box-shadow: 0 0 25px 12px rgba(255, 242, 0, 1) !important;
+            transform: scale(1.3) !important;
+        }
+        
+        /* Adjust the world map background */
+        .world-map {
+            background-image: url('../img/world map.png') !important;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        /* Remove dark overlay, stars directly on map */
+        .world-map:before {
+            display: none;
+        }
+        
+        /* Remove all background stars */
+        .world-map:after {
+            display: none !important;
+        }
+        
+        /* Ensure map points appear above the overlay */
+        .map-point {
+            z-index: 300 !important;
+            position: absolute;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+        
+        .map-point:hover {
+            z-index: 310 !important;
+            transform: translate(-50%, -50%) scale(1.3);
+        }
+        
+        /* Enhanced twinkling animation for stars */
+        @keyframes twinkle {
+            0% { opacity: 0.7; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.7; transform: scale(0.9); }
+        }
+        
+        .map-point .point-dot {
+            animation: twinkle 3s infinite !important;
+        }
+        
+        /* Stagger the animation timing for each star */
+        .map-point:nth-child(2n) .point-dot {
+            animation-delay: 0.5s !important;
+        }
+        
+        .map-point:nth-child(3n) .point-dot {
+            animation-delay: 1s !important;
+        }
+        
+        .map-point:nth-child(5n) .point-dot {
+            animation-delay: 1.5s !important;
+        }
+        
+        .map-point:nth-child(7n) .point-dot {
+            animation-delay: 2s !important;
+        }
+        
+        /* Make point labels visible */
+        .point-label {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            z-index: 6;
+            margin-top: 10px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .map-point:hover .point-label {
+            opacity: 1;
+        }
+        
+        /* Adjust star size based on region importance */
+        .map-point[data-id="1"] .point-dot,  /* Paris */
+        .map-point[data-id="2"] .point-dot,  /* Tokyo */
+        .map-point[data-id="3"] .point-dot,  /* New York */
+        .map-point[data-id="7"] .point-dot { /* Rome */
+            /* Larger stars for major destinations */
+            width: 10px !important;
+            height: 10px !important;
+            box-shadow: 0 0 30px 12px rgba(255, 242, 0, 1) !important;
+            background-color: #FFF782 !important;
+            z-index: 15 !important;
+        }
+        
+        /* Extra glow effect for all destination points to make them stand out more */
+        .point-dot::after {
+            content: "";
+            display: block !important;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 130%;
+            height: 130%;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: 0 0 15px 8px rgba(255, 255, 255, 0.5);
+            z-index: -1;
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.9); }
+            100% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+        
+        /* Map zoom and pan styles */
+        .world-map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 70vh;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+        
+        .world-map {
+            width: 100%;
+            height: 100%;
+            transform-origin: center center;
+            transition: transform 0.2s ease-out;
+            will-change: transform;
+            position: relative;
+        }
+        
+        .map-controls {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .map-controls button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .map-controls button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .map-filters {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 20px 18px;
+            border-radius: 25px;
+            color: #333;
+            max-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 30px rgba(255, 182, 245, 0.3);
+            border: 2px solid rgba(255, 182, 245, 0.4);
+            backdrop-filter: blur(8px);
+        }
+        
+        .filter-label {
+            margin-bottom: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 182, 245, 0.5);
+            padding-bottom: 10px;
+            color: #333;
+            letter-spacing: 0.5px;
+            text-shadow: none;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 5px;
+        }
+        
+        .filter-btn {
+            background-color: rgba(255, 255, 255, 0.3);
+            border: none;
+            padding: 12px 16px;
+            border-radius: 22px;
+            color: #333;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: left;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255, 182, 245, 0.3);
+        }
+        
+        .filter-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2));
+            z-index: -1;
+        }
+        
+        .filter-btn::before {
+            content: "";
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            margin-right: 12px;
+            text-align: center;
+            line-height: 26px;
+            transition: transform 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 182, 245, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .filter-btn:hover::before {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .filter-btn.active {
+            background-color: rgba(255, 182, 245, 0.7);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 182, 245, 0.6), 0 0 20px rgba(255, 182, 245, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 为每个地区添加不同颜色和图标 */
+        .filter-btn[data-region="all"]::before {
+            content: "🌍";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="Asia"]::before {
+            content: "🏮";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="Europe"]::before {
+            content: "🏰";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="North America"]::before {
+            content: "🗽";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="South America"]::before {
+            content: "🌴";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="Africa"]::before {
+            content: "🦒";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="Oceania"]::before {
+            content: "🏝️";
+            font-size: 20px;
+        }
+        
+        .filter-btn[data-region="Antarctica"]::before {
+            content: "❄️";
+            font-size: 20px;
+        }
+        
+        /* 为每个按钮添加更明亮的渐变背景 */
+        .filter-btn[data-region="all"] {
+            background: linear-gradient(45deg, rgba(255, 182, 245, 0.4), rgba(147, 96, 220, 0.4));
+        }
+        
+        .filter-btn[data-region="Asia"] {
+            background: linear-gradient(45deg, rgba(255, 120, 120, 0.4), rgba(255, 170, 120, 0.4));
+        }
+        
+        .filter-btn[data-region="Europe"] {
+            background: linear-gradient(45deg, rgba(120, 120, 255, 0.4), rgba(170, 120, 255, 0.4));
+        }
+        
+        .filter-btn[data-region="North America"] {
+            background: linear-gradient(45deg, rgba(120, 200, 255, 0.4), rgba(120, 170, 255, 0.4));
+        }
+        
+        .filter-btn[data-region="South America"] {
+            background: linear-gradient(45deg, rgba(120, 255, 120, 0.4), rgba(170, 255, 120, 0.4));
+        }
+        
+        .filter-btn[data-region="Africa"] {
+            background: linear-gradient(45deg, rgba(255, 200, 120, 0.4), rgba(255, 170, 70, 0.4));
+        }
+        
+        .filter-btn[data-region="Oceania"] {
+            background: linear-gradient(45deg, rgba(120, 220, 220, 0.4), rgba(120, 220, 255, 0.4));
+        }
+        
+        .filter-btn[data-region="Antarctica"] {
+            background: linear-gradient(45deg, rgba(200, 200, 255, 0.4), rgba(220, 220, 255, 0.4));
+        }
+        
+        /* 激活状态使用更鲜艳的颜色和发光效果 */
+        .filter-btn[data-region="all"].active {
+            background: linear-gradient(45deg, rgba(255, 182, 245, 0.85), rgba(147, 96, 220, 0.85));
+            box-shadow: 0 4px 15px rgba(255, 182, 245, 0.6), 0 0 20px rgba(147, 96, 220, 0.5);
+        }
+        
+        .filter-btn[data-region="Asia"].active {
+            background: linear-gradient(45deg, rgba(255, 120, 120, 0.85), rgba(255, 170, 120, 0.85));
+            box-shadow: 0 4px 15px rgba(255, 120, 120, 0.6), 0 0 20px rgba(255, 170, 120, 0.5);
+        }
+        
+        .filter-btn[data-region="Europe"].active {
+            background: linear-gradient(45deg, rgba(120, 120, 255, 0.85), rgba(170, 120, 255, 0.85));
+            box-shadow: 0 4px 15px rgba(120, 120, 255, 0.6), 0 0 20px rgba(170, 120, 255, 0.5);
+        }
+        
+        .filter-btn[data-region="North America"].active {
+            background: linear-gradient(45deg, rgba(120, 200, 255, 0.85), rgba(120, 170, 255, 0.85));
+            box-shadow: 0 4px 15px rgba(120, 200, 255, 0.6), 0 0 20px rgba(120, 170, 255, 0.5);
+        }
+        
+        .filter-btn[data-region="South America"].active {
+            background: linear-gradient(45deg, rgba(120, 255, 120, 0.85), rgba(170, 255, 120, 0.85));
+            box-shadow: 0 4px 15px rgba(120, 255, 120, 0.6), 0 0 20px rgba(170, 255, 120, 0.5);
+        }
+        
+        .filter-btn[data-region="Africa"].active {
+            background: linear-gradient(45deg, rgba(255, 200, 120, 0.85), rgba(255, 170, 70, 0.85));
+            box-shadow: 0 4px 15px rgba(255, 200, 120, 0.6), 0 0 20px rgba(255, 170, 70, 0.5);
+        }
+        
+        .filter-btn[data-region="Oceania"].active {
+            background: linear-gradient(45deg, rgba(120, 220, 220, 0.85), rgba(120, 220, 255, 0.85));
+            box-shadow: 0 4px 15px rgba(120, 220, 220, 0.6), 0 0 20px rgba(120, 220, 255, 0.5);
+        }
+        
+        .filter-btn[data-region="Antarctica"].active {
+            background: linear-gradient(45deg, rgba(200, 200, 255, 0.85), rgba(220, 220, 255, 0.85));
+            box-shadow: 0 4px 15px rgba(200, 200, 255, 0.6), 0 0 20px rgba(220, 220, 255, 0.5);
+        }
+        
+        /* Mobile styles to move the filters from left to bottom */
+        @media (max-width: 768px) {
+            .map-filters {
+                position: fixed;
+                left: 0;
+                top: auto;
+                bottom: 0;
+                transform: none;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                padding: 12px 15px;
+                background-color: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+                z-index: 200;
+                pointer-events: auto;
+            }
+            
+            /* Reposition map controls on mobile so they're not blocked by filters */
+            .map-controls {
+                bottom: auto;
+                top: 20px;
+                right: 20px;
+                z-index: 250;
+                pointer-events: auto;
+            }
+            
+            /* Ensure world map container passes through touch events to map points */
+            .world-map-container {
+                height: calc(100vh - 200px);
+                pointer-events: auto;
+            }
+            
+            .world-map {
+                pointer-events: auto;
+            }
+            
+            /* Make sure point dots are clickable */
+            .point-dot {
+                pointer-events: auto;
+            }
+            
+            .filter-label {
+                margin-bottom: 10px;
+                font-size: 14px;
+                padding-bottom: 5px;
+            }
+            
+            .filter-options {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+                justify-content: center;
+            }
+            
+            .filter-btn {
+                width: auto;
+                padding: 8px 12px;
+                font-size: 12px;
+                flex: 0 0 auto;
+            }
+            
+            .filter-btn::before {
+                width: 20px;
+                height: 20px;
+                margin-right: 6px;
+                font-size: 16px;
+            }
+        }
+        
+        /* 梦幻明信片风格的目的地详情模态窗口 */
+        .destination-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0.5deg);
+            width: 80%;
+            max-width: 700px;
+            background-color: #fff9fb;
+            border: 2px solid #ecc6ff;
+            border-radius: 12px;
+            box-shadow: 0 10px 35px rgba(147, 96, 220, 0.3), 0 2px 10px rgba(255, 182, 245, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            color: #333;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none"><path d="M15 15L85 85M15 85L85 15" stroke="%23f9e0ff" stroke-width="0.5"/></svg>');
+            background-size: 20px 20px;
+        }
+        
+        .destination-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) rotate(0.5deg);
+        }
+        
+        /* 邮票装饰效果 */
+        .modal-header {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            background: linear-gradient(135deg, #ffe6fa, #f3c4ff);
+            color: #333;
+            border-bottom: 2px solid #ecc6ff;
+        }
+        
+        .modal-header::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            width: 60px;
+            height: 70px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 70"><rect x="0" y="0" width="60" height="70" fill="none" stroke="%23cc88ff" stroke-width="2" stroke-dasharray="5,3" /><circle cx="30" cy="35" r="20" fill="none" stroke="%23cc88ff" stroke-width="1" /><path d="M20,25 Q30,15 40,25 Q50,35 40,45 Q30,55 20,45 Q10,35 20,25" fill="none" stroke="%23cc88ff" stroke-width="1" /><path d="M25,28 L35,42 M35,28 L25,42" stroke="%23cc88ff" stroke-width="0.5" /></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+        
+        /* 邮戳效果 */
+        .modal-header::before {
+            content: "DREAMLAND";
+            position: absolute;
+            top: 15px;
+            left: 85px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #a359dd;
+            transform: rotate(-5deg);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .modal-title {
+            position: relative;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+            color: #7f41cc;
+            font-family: 'Brush Script MT', cursive;
+            z-index: 2;
+            text-shadow: 1px 1px 3px rgba(255, 182, 245, 0.8);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: #7f41cc;
+            font-size: 26px;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            z-index: 2;
+        }
+        
+        .modal-close:hover {
+            background-color: rgba(255, 182, 245, 0.3);
+        }
+        
+        .modal-content {
+            padding: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .destination-image {
+            width: 100%;
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #fff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(147, 96, 220, 0.2);
+            position: relative;
+        }
+        
+        /* 梦幻滤镜效果 */
+        .destination-image::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255, 230, 250, 0.2), rgba(147, 96, 220, 0.2));
+            z-index: 1;
+            border-radius: 5px;
+        }
+        
+        .destination-info h4 {
+            font-size: 18px;
+            margin: 20px 0 10px;
+            color: #7f41cc;
+            border-bottom: 1px solid #ecc6ff;
+            padding-bottom: 8px;
+            font-family: 'Georgia', serif;
+        }
+        
+        .destination-info p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-family: 'Georgia', serif;
+        }
+        
+        .highlights-list {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .highlights-list li {
+            margin-bottom: 8px;
+            color: #555;
+            font-family: 'Georgia', serif;
+        }
+        
+        .destination-facts {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #faf0ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #ecc6ff;
+        }
+        
+        .fact {
+            flex: 1 0 30%;
+            min-width: 150px;
+            margin-bottom: 10px;
+        }
+        
+        .fact-label {
+            font-weight: 600;
+            color: #7f41cc;
+            display: block;
+            font-size: 14px;
+        }
+        
+        .fact-value {
+            color: #555;
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 2px solid #ecc6ff;
+            background-color: #faf0ff;
+        }
+        
+        .modal-footer button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background-color: #b27aff;
+            color: white;
+            box-shadow: 0 2px 8px rgba(178, 122, 255, 0.4);
+        }
+        
+        .btn-primary:hover {
+            background-color: #9d5aff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(178, 122, 255, 0.6);
+        }
+        
+        .btn-accent {
+            background-color: #ff9be5;
+            color: white;
+            box-shadow: 0 2px 8px rgba(255, 155, 229, 0.4);
+        }
+        
+        .btn-accent:hover {
+            background-color: #ff7ad9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 155, 229, 0.6);
+        }
+        
+        .btn-secondary {
+            background-color: #e5e0ee;
+            color: #7f41cc;
+            box-shadow: 0 2px 8px rgba(229, 224, 238, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d4cbe0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 224, 238, 0.6);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(147, 96, 220, 0.3);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* 小型地点星星样式 */
+        .map-point.small-point .point-dot {
+            width: 3.5px !important;
+            height: 3.5px !important;
+            background-color: #FFE066 !important;
+            box-shadow: 0 0 10px 4px rgba(255, 224, 102, 0.8) !important;
+            z-index: 5 !important;
+        }
+        
+        .map-point.small-point:hover .point-dot {
+            background-color: #FFD700 !important;
+            box-shadow: 0 0 15px 6px rgba(255, 215, 0, 0.9) !important;
+            transform: scale(1.4) !important;
+        }
+        
+        .map-point.small-point .point-label {
+            font-size: 11px;
+            padding: 2px 6px;
+        }
+        
+        .map-point.small-point .point-dot::after {
+            width: 120%;
+            height: 120%;
+            box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.4);
+            animation: pulse 2.5s infinite alternate;
+        }
+        
+        /* 中型地点星星样式 */
+        .map-point.medium-point .point-dot {
+            width: 6px !important;
+            height: 6px !important;
+            background-color: #FFF0A0 !important;
+            box-shadow: 0 0 16px 6px rgba(255, 230, 140, 0.9) !important;
+            z-index: 8 !important;
+        }
+        
+        .map-point.medium-point:hover .point-dot {
+            background-color: #FFEA00 !important;
+            box-shadow: 0 0 20px 8px rgba(255, 234, 0, 0.95) !important;
+            transform: scale(1.5) !important;
+        }
+        
+        .map-point.medium-point .point-label {
+            font-size: 12px;
+            padding: 2px 8px;
+        }
+        
+        .map-point.medium-point .point-dot::after {
+            width: 125%;
+            height: 125%;
+            box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.45);
+            animation: pulse 2.3s infinite alternate;
+        }
+        
+        /* 修复移动端地图交互 */
+        @media (max-width: 768px) {
+            /* 提高地图点的z-index和确保触摸事件可用 */
+            .map-point, 
+            .point-dot,
+            .point-label {
+                z-index: 1000 !important;
+                pointer-events: auto !important;
+                touch-action: auto !important;
+            }
+            
+            /* 确保地图容器不阻止触摸事件 */
+            .world-map-container,
+            .world-map {
+                pointer-events: auto !important;
+                touch-action: manipulation !important;
+            }
+            
+            /* 确保底部的过滤器不会拦截地图点的触摸事件 */
+            .map-filters {
+                pointer-events: auto !important;
+                touch-action: auto !important;
+            }
+            
+            /* 确保地图点在触摸时响应 */
+            .map-point:active .point-dot {
+                background-color: #FFF200 !important;
+                box-shadow: 0 0 25px 12px rgba(255, 242, 0, 1) !important;
+                transform: scale(1.3) !important;
+            }
+            
+            /* 确保标签在触摸时显示 */
+            .map-point:active .point-label {
+                opacity: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body class="explore-page">
+    <div class="fullscreen-bg"></div>
+    
+    <nav class="side-nav">
+        <ul>
+            <li><a href="create.html" class="nav-item">Create</a></li>
+            <li><a href="explore.html" class="nav-item">Explore</a></li>
+            <li><a href="personal.html" class="nav-item">Personal</a></li>
+            <li><a href="plans.html" class="nav-item">Plans</a></li>
+        </ul>
+    </nav>
+    
+    <a href="index.html" class="back-nav">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5L5 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    
+    <main class="content" style="padding-top: 60px; height: calc(100vh - 60px);">
+        <div class="world-map-container">
+            <div class="world-map">
+                <!-- Map points for different destinations -->
+                <div class="map-point" data-id="1" data-region="Europe" style="top: 28%; left: 47%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Paris</div>
+                </div>
+                <div class="map-point" data-id="2" data-region="Asia" style="top: 34%; left: 82%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Tokyo</div>
+                </div>
+                <div class="map-point" data-id="3" data-region="North America" style="top: 30%; left: 25%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">New York</div>
+                </div>
+                <div class="map-point" data-id="4" data-region="Oceania" style="top: 65%; left: 85%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Sydney</div>
+                </div>
+                <div class="map-point" data-id="5" data-region="Africa" style="top: 32%; left: 54%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Cairo</div>
+                </div>
+                <div class="map-point" data-id="6" data-region="South America" style="top: 57%; left: 35%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Rio</div>
+                </div>
+                <div class="map-point" data-id="7" data-region="Europe" style="top: 31%; left: 49%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Rome</div>
+                </div>
+                <div class="map-point" data-id="8" data-region="Europe" style="top: 26%; left: 45%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">London</div>
+                </div>
+                <div class="map-point" data-id="9" data-region="Asia" style="top: 42%; left: 75%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Bangkok</div>
+                </div>
+                <div class="map-point" data-id="10" data-region="North America" style="top: 32%; left: 15%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Los Angeles</div>
+                </div>
+                <!-- Adding more destinations to better cover the world map -->
+                <div class="map-point" data-id="11" data-region="Asia" style="top: 44%; left: 72%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Mumbai</div>
+                </div>
+                <div class="map-point" data-id="12" data-region="Europe" style="top: 26%; left: 60%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Moscow</div>
+                </div>
+                <div class="map-point" data-id="13" data-region="Africa" style="top: 56%; left: 57%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Cape Town</div>
+                </div>
+                <div class="map-point" data-id="14" data-region="Asia" style="top: 38%; left: 88%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Seoul</div>
+                </div>
+                <div class="map-point" data-id="15" data-region="South America" style="top: 48%; left: 32%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">São Paulo</div>
+                </div>
+                <div class="map-point" data-id="16" data-region="Asia" style="top: 37%; left: 67%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Dubai</div>
+                </div>
+                <div class="map-point" data-id="17" data-region="North America" style="top: 22%; left: 23%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Toronto</div>
+                </div>
+                <div class="map-point" data-id="18" data-region="Asia" style="top: 36%; left: 78%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Shanghai</div>
+                </div>
+                <!-- 添加南极洲目的地 -->
+                <div class="map-point" data-id="19" data-region="Antarctica" style="top: 88%; left: 50%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">McMurdo Station</div>
+                </div>
+                
+                <!-- 添加小型地点星星 -->
+                <!-- 欧洲小型地点 -->
+                <div class="map-point small-point" data-id="20" data-region="Europe" style="top: 30%; left: 51%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Venice</div>
+                </div>
+                <div class="map-point small-point" data-id="21" data-region="Europe" style="top: 27%; left: 50%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Amsterdam</div>
+                </div>
+                <div class="map-point small-point" data-id="22" data-region="Europe" style="top: 30%; left: 43.5%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Barcelona</div>
+                </div>
+                <div class="map-point small-point" data-id="23" data-region="Europe" style="top: 28%; left: 53%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Prague</div>
+                </div>
+                
+                <!-- 亚洲小型地点 -->
+                <div class="map-point small-point" data-id="24" data-region="Asia" style="top: 40%; left: 85%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Kyoto</div>
+                </div>
+                <div class="map-point small-point" data-id="25" data-region="Asia" style="top: 46%; left: 77%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Phuket</div>
+                </div>
+                <div class="map-point small-point" data-id="26" data-region="Asia" style="top: 41%; left: 70%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Kathmandu</div>
+                </div>
+                <div class="map-point small-point" data-id="27" data-region="Asia" style="top: 39%; left: 80%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Hong Kong</div>
+                </div>
+                
+                <!-- 北美洲小型地点 -->
+                <div class="map-point small-point" data-id="28" data-region="North America" style="top: 33%; left: 19%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">San Francisco</div>
+                </div>
+                <div class="map-point small-point" data-id="29" data-region="North America" style="top: 29%; left: 20%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Chicago</div>
+                </div>
+                <div class="map-point small-point" data-id="30" data-region="North America" style="top: 37%; left: 21%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Cancun</div>
+                </div>
+                
+                <!-- 南美洲小型地点 -->
+                <div class="map-point small-point" data-id="31" data-region="South America" style="top: 53%; left: 30%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Cusco</div>
+                </div>
+                <div class="map-point small-point" data-id="32" data-region="South America" style="top: 59%; left: 29%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Santiago</div>
+                </div>
+                
+                <!-- 非洲小型地点 -->
+                <div class="map-point small-point" data-id="33" data-region="Africa" style="top: 40%; left: 54%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Marrakech</div>
+                </div>
+                <div class="map-point small-point" data-id="34" data-region="Africa" style="top: 50%; left: 56%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Nairobi</div>
+                </div>
+                
+                <!-- 大洋洲小型地点 -->
+                <div class="map-point small-point" data-id="35" data-region="Oceania" style="top: 69%; left: 87%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Auckland</div>
+                </div>
+                <div class="map-point small-point" data-id="36" data-region="Oceania" style="top: 60%; left: 92%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Fiji</div>
+                </div>
+                
+                <!-- 其他小型地点 -->
+                <div class="map-point small-point" data-id="37" data-region="Asia" style="top: 35%; left: 60%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Istanbul</div>
+                </div>
+                <div class="map-point small-point" data-id="38" data-region="Asia" style="top: 33%; left: 65%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Tehran</div>
+                </div>
+                
+                <!-- 添加中型地点星星 -->
+                <!-- 欧洲中型地点 -->
+                <div class="map-point medium-point" data-id="39" data-region="Europe" style="top: 24%; left: 48%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Berlin</div>
+                </div>
+                <div class="map-point medium-point" data-id="40" data-region="Europe" style="top: 25%; left: 35%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Dublin</div>
+                </div>
+                <div class="map-point medium-point" data-id="41" data-region="Europe" style="top: 28%; left: 42%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Madrid</div>
+                </div>
+                <div class="map-point medium-point" data-id="42" data-region="Europe" style="top: 33%; left: 52%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Athens</div>
+                </div>
+                
+                <!-- 亚洲中型地点 -->
+                <div class="map-point medium-point" data-id="43" data-region="Asia" style="top: 33%; left: 95%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Tokyo</div>
+                </div>
+                <div class="map-point medium-point" data-id="44" data-region="Asia" style="top: 39%; left: 86%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Beijing</div>
+                </div>
+                <div class="map-point medium-point" data-id="45" data-region="Asia" style="top: 44%; left: 85%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Singapore</div>
+                </div>
+                <div class="map-point medium-point" data-id="46" data-region="Asia" style="top: 36%; left: 74%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Delhi</div>
+                </div>
+                
+                <!-- 美洲中型地点 -->
+                <div class="map-point medium-point" data-id="47" data-region="North America" style="top: 26%; left: 27%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Montreal</div>
+                </div>
+                <div class="map-point medium-point" data-id="48" data-region="North America" style="top: 42%; left: 20%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Mexico City</div>
+                </div>
+                <div class="map-point medium-point" data-id="49" data-region="South America" style="top: 65%; left: 28%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Buenos Aires</div>
+                </div>
+                <div class="map-point medium-point" data-id="50" data-region="South America" style="top: 45%; left: 27%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Bogota</div>
+                </div>
+                
+                <!-- 非洲中型地点 -->
+                <div class="map-point medium-point" data-id="51" data-region="Africa" style="top: 46%; left: 53%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Lagos</div>
+                </div>
+                <div class="map-point medium-point" data-id="52" data-region="Africa" style="top: 38%; left: 50%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Casablanca</div>
+                </div>
+                
+                <!-- 大洋洲中型地点 -->
+                <div class="map-point medium-point" data-id="53" data-region="Oceania" style="top: 63%; left: 82%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Melbourne</div>
+                </div>
+                <div class="map-point medium-point" data-id="54" data-region="Oceania" style="top: 58%; left: 96%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Honolulu</div>
+                </div>
+                <!-- 添加中型城市的数据 -->
+                <div class="map-point medium-point" data-id="39" data-region="Europe" style="top: 24%; left: 48%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Berlin</div>
+                </div>
+                <div class="map-point medium-point" data-id="41" data-region="Europe" style="top: 28%; left: 42%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Madrid</div>
+                </div>
+                <div class="map-point medium-point" data-id="44" data-region="Asia" style="top: 39%; left: 86%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Beijing</div>
+                </div>
+                <div class="map-point medium-point" data-id="48" data-region="North America" style="top: 42%; left: 20%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Mexico City</div>
+                </div>
+                <div class="map-point medium-point" data-id="51" data-region="Africa" style="top: 46%; left: 53%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Lagos</div>
+                </div>
+                <div class="map-point medium-point" data-id="53" data-region="Oceania" style="top: 63%; left: 82%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Melbourne</div>
+                </div>
+            </div>
+            
+            <div class="map-controls">
+                <button class="map-zoom-in">+</button>
+                <button class="map-zoom-out">-</button>
+                <button class="map-reset">Reset</button>
+            </div>
+            
+            <div class="map-filters">
+                <div class="filter-label">Filter by Region:</div>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-region="all">All</button>
+                    <button class="filter-btn" data-region="Asia">Asia</button>
+                    <button class="filter-btn" data-region="Europe">Europe</button>
+                    <button class="filter-btn" data-region="North America">North America</button>
+                    <button class="filter-btn" data-region="South America">South America</button>
+                    <button class="filter-btn" data-region="Africa">Africa</button>
+                    <button class="filter-btn" data-region="Oceania">Oceania</button>
+                    <button class="filter-btn" data-region="Antarctica">Antarctica</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Destination detail modal -->
+        <div class="destination-modal">
+            <div class="modal-header">
+                <h2 class="modal-title"></h2>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-content">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary view-guides-btn">View Travel Guides</button>
+                <button class="btn btn-accent view-community-guides-btn">查看其他人留下的攻略</button>
+                <button class="btn btn-secondary create-trip-btn">Create Custom Trip</button>
+            </div>
+        </div>
+        
+        <div class="modal-overlay"></div>
+    </main>
+
+    <!-- Community Guides Modal -->
+    <div class="community-guides-overlay"></div>
+    <div class="community-guides-modal">
+        <div class="community-guides-header">
+            <h2 class="community-guides-title">社区分享的攻略</h2>
+            <button class="community-guides-close">×</button>
+        </div>
+        <div class="community-guides-content">
+            <div class="community-guides-list">
+                <!-- 示例社区攻略卡片 -->
+                <div class="community-guide-card">
+                    <div class="guide-card-image" style="background-image: url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="guide-card-content">
+                        <div class="guide-card-title">巴黎三天深度游</div>
+                        <div class="guide-card-author">
+                            <i class="fas fa-user-circle"></i> 旅行爱好者小明
+                        </div>
+                        <div class="guide-card-rating">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star-half-alt rating-star"></i>
+                            (4.5)
+                        </div>
+                        <div class="guide-card-tags">
+                            <span class="guide-tag">浪漫</span>
+                            <span class="guide-tag">美食</span>
+                            <span class="guide-tag">艺术</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-guide-card">
+                    <div class="guide-card-image" style="background-image: url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="guide-card-content">
+                        <div class="guide-card-title">东京樱花季完美攻略</div>
+                        <div class="guide-card-author">
+                            <i class="fas fa-user-circle"></i> 日本通小红
+                        </div>
+                        <div class="guide-card-rating">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            (5.0)
+                        </div>
+                        <div class="guide-card-tags">
+                            <span class="guide-tag">赏樱</span>
+                            <span class="guide-tag">文化</span>
+                            <span class="guide-tag">美食</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-guide-card">
+                    <div class="guide-card-image" style="background-image: url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="guide-card-content">
+                        <div class="guide-card-title">纽约艺术爱好者行程</div>
+                        <div class="guide-card-author">
+                            <i class="fas fa-user-circle"></i> 艺术家小李
+                        </div>
+                        <div class="guide-card-rating">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="far fa-star rating-star"></i>
+                            (4.0)
+                        </div>
+                        <div class="guide-card-tags">
+                            <span class="guide-tag">艺术</span>
+                            <span class="guide-tag">博物馆</span>
+                            <span class="guide-tag">城市</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-guide-card">
+                    <div class="guide-card-image" style="background-image: url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="guide-card-content">
+                        <div class="guide-card-title">罗马历史探索之旅</div>
+                        <div class="guide-card-author">
+                            <i class="fas fa-user-circle"></i> 历史学者小芳
+                        </div>
+                        <div class="guide-card-rating">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star-half-alt rating-star"></i>
+                            (4.7)
+                        </div>
+                        <div class="guide-card-tags">
+                            <span class="guide-tag">历史</span>
+                            <span class="guide-tag">古迹</span>
+                            <span class="guide-tag">文化</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-guide-card">
+                    <div class="guide-card-image" style="background-image: url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="guide-card-content">
+                        <div class="guide-card-title">悉尼海滩度假指南</div>
+                        <div class="guide-card-author">
+                            <i class="fas fa-user-circle"></i> 冲浪达人小张
+                        </div>
+                        <div class="guide-card-rating">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="far fa-star rating-star"></i>
+                            (4.1)
+                        </div>
+                        <div class="guide-card-tags">
+                            <span class="guide-tag">海滩</span>
+                            <span class="guide-tag">冲浪</span>
+                            <span class="guide-tag">阳光</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-guide-card">
+                    <div class="guide-card-image" style="background-image: url('https://images.unsplash.com/photo-1549944560-c5e2a325e694?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="guide-card-content">
+                        <div class="guide-card-title">曼谷美食探索之旅</div>
+                        <div class="guide-card-author">
+                            <i class="fas fa-user-circle"></i> 美食家小王
+                        </div>
+                        <div class="guide-card-rating">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            (4.9)
+                        </div>
+                        <div class="guide-card-tags">
+                            <span class="guide-tag">美食</span>
+                            <span class="guide-tag">夜市</span>
+                            <span class="guide-tag">文化</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guide Detail Modal -->
+    <div class="guide-detail-overlay"></div>
+    <div class="guide-detail-modal">
+        <div class="guide-detail-header">
+            <h2 class="guide-detail-title">攻略详情</h2>
+            <button class="guide-detail-close">×</button>
+        </div>
+        <div class="guide-detail-content">
+            <!-- Guide details will be populated by JavaScript -->
+        </div>
+        <div class="guide-detail-footer">
+            <button class="btn btn-primary collect-guide-btn">收藏攻略</button>
+        </div>
+    </div>
+
+    <script src="js/html2canvas.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/main-meteor.js"></script>
+    <script src="js/airplane-cursor.js"></script>
+    
+    <!-- 原始功能脚本 -->
+    <script>
+        // 地区筛选功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const mapPoints = document.querySelectorAll('.map-point');
+            
+            // 为每个筛选按钮添加点击事件
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 获取选中的地区
+                    const region = this.getAttribute('data-region');
+                    
+                    // 移除所有按钮的active类
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 给当前按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 根据地区显示或隐藏地点
+                    mapPoints.forEach(point => {
+                        const pointRegion = point.getAttribute('data-region');
+                        
+                        if (region === 'all') {
+                            // 显示所有地点
+                            point.style.display = 'block';
+                        } else if (pointRegion === region) {
+                            // 显示匹配地区的地点
+                            point.style.display = 'block';
+                        } else {
+                            // 隐藏不匹配地区的地点
+                            point.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 初始化地图上的所有地点
+            filterButtons[0].click(); // 默认点击"All"按钮
+        });
+
+        // 目的地数据
+        window.destinationsData = {
+            // 主要地点
+            1: { // Paris
+                name: "Paris",
+                image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                description: "巴黎是法国的首都，被誉为"光之城"，以其丰富的艺术、时尚、美食和浪漫氛围而闻名于世。这座城市的标志性建筑埃菲尔铁塔和卢浮宫每年吸引着数百万游客。",
+                highlights: [
+                    "埃菲尔铁塔 - 巴黎的标志性建筑，提供壮观的城市景观",
+                    "卢浮宫 - 世界上最大的艺术博物馆，拥有蒙娜丽莎等著名艺术品",
+                    "巴黎圣母院 - 中世纪哥特式建筑的代表作",
+                    "香榭丽舍大道 - 世界著名的购物街和历史大道"
+                ],
+                bestTime: "4月至6月或9月至10月",
+                language: "法语",
+                currency: "欧元 (EUR)",
+                timezone: "中欧时间 (CET), UTC+1"
+            },
+            2: { // Tokyo
+                name: "Tokyo",
+                image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                description: "东京是日本的首都，是世界上最繁忙的大都市之一，融合了尖端科技与传统文化。这里有世界上最大的城市经济体，同时保留着丰富的历史和文化景点。",
+                highlights: [
+                    "东京晴空塔 - 全球最高的自立式通讯塔",
+                    "明治神宫 - 位于繁华都市中心的宁静神社",
+                    "涩谷十字路口 - 世界上最繁忙的人行横道",
+                    "浅草寺 - 东京最古老的寺庙，建于公元645年"
+                ],
+                bestTime: "3月至5月(樱花季)或9月至11月",
+                language: "日语",
+                currency: "日元 (JPY)",
+                timezone: "日本标准时间 (JST), UTC+9"
+            },
+            3: { // New York
+                name: "New York",
+                image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                description: "纽约是美国最大的城市，被誉为"大苹果"，是全球金融、文化和艺术的中心。这座城市以其天际线、百老汇表演和多元文化而闻名。",
+                highlights: [
+                    "自由女神像 - 美国自由和民主的象征",
+                    "中央公园 - 曼哈顿中心的巨大城市公园",
+                    "帝国大厦 - 标志性的艺术装饰摩天大楼",
+                    "时代广场 - 繁华的商业交叉路口，被称为'世界的十字路口'"
+                ],
+                bestTime: "4月至6月或9月至11月",
+                language: "英语",
+                currency: "美元 (USD)",
+                timezone: "东部标准时间 (EST), UTC-5"
+            }
+            // 其他目的地数据保持不变...
+        };
+
+        // 目的地模态窗口功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const mapPoints = document.querySelectorAll('.map-point');
+            const modal = document.querySelector('.destination-modal');
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const modalTitle = document.querySelector('.modal-title');
+            const modalContent = document.querySelector('.modal-content');
+            const modalClose = document.querySelector('.modal-close');
+            
+            // 桌面端点击处理
+            mapPoints.forEach(point => {
+                // 只为没有修复标记的点添加常规点击处理
+                if (!point.hasAttribute('data-fixed')) {
+                point.addEventListener('click', function() {
+                    const destinationId = this.getAttribute('data-id');
+                    let destinationData;
+                    
+                    // 检查是否有该地点的详细数据
+                        if (window.destinationsData && window.destinationsData[destinationId]) {
+                            destinationData = window.destinationsData[destinationId];
+                    } else {
+                        // 如果没有详细数据，使用基本信息
+                        const destinationName = this.querySelector('.point-label').textContent;
+                        destinationData = {
+                            name: destinationName,
+                            image: "https://images.unsplash.com/photo-1500835556837-99ac94a94552?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80", // 默认图片
+                            description: `${destinationName}是一个迷人的旅游目的地，拥有独特的文化和风景。`,
+                            highlights: ["著名景点", "当地美食", "文化体验", "自然景观"],
+                            bestTime: "根据目的地而定",
+                            language: "当地语言",
+                            currency: "当地货币",
+                            timezone: "当地时区"
+                        };
+                    }
+                    
+                    // 设置模态窗口内容
+                    modalTitle.textContent = destinationData.name;
+                    
+                    // 根据目的地数据填充模态内容
+                    modalContent.innerHTML = `
+                        <div class="destination-image" style="background-image: url('${destinationData.image}');"></div>
+                        <div class="destination-info">
+                            <h4>关于 ${destinationData.name}</h4>
+                            <p>${destinationData.description}</p>
+                            
+                            <h4>推荐景点</h4>
+                            <ul class="highlights-list">
+                                ${destinationData.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                            </ul>
+                            
+                            <div class="destination-facts">
+                                <div class="fact">
+                                    <span class="fact-label">最佳旅行时间</span>
+                                    <span class="fact-value">${destinationData.bestTime}</span>
+                                </div>
+                                <div class="fact">
+                                    <span class="fact-label">当地语言</span>
+                                    <span class="fact-value">${destinationData.language}</span>
+                                </div>
+                                <div class="fact">
+                                    <span class="fact-label">货币</span>
+                                    <span class="fact-value">${destinationData.currency}</span>
+                                </div>
+                                <div class="fact">
+                                    <span class="fact-label">时区</span>
+                                    <span class="fact-value">${destinationData.timezone}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 显示模态窗口
+                    modal.classList.add('active');
+                    modalOverlay.classList.add('active');
+                });
+                }
+            });
+            
+            // 关闭模态窗口
+            modalClose.addEventListener('click', function() {
+                modal.classList.remove('active');
+                modalOverlay.classList.remove('active');
+            });
+            
+            modalOverlay.addEventListener('click', function() {
+                modal.classList.remove('active');
+                modalOverlay.classList.remove('active');
+            });
+        });
+    </script>
+    
+    <!-- 移动端地图点交互修复 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查是否在移动设备上
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // 获取所有地图点
+                const mapPoints = document.querySelectorAll('.map-point');
+                const modal = document.querySelector('.destination-modal');
+                const modalOverlay = document.querySelector('.modal-overlay');
+                const modalTitle = document.querySelector('.modal-title');
+                const modalContent = document.querySelector('.modal-content');
+                
+                // 为每个地图点添加强制触摸事件
+                mapPoints.forEach(point => {
+                    // 移除原有事件
+                    point.setAttribute('data-fixed', 'true');
+                    
+                    // 简化与增强的触摸处理
+                    point.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // 获取地图点数据
+                        const id = this.getAttribute('data-id');
+                        const name = this.querySelector('.point-label').textContent;
+                        
+                        console.log('地图点被点击:', id, name);
+                        
+                        // 直接设置模态框内容并显示
+                        if (modalTitle && modalContent) {
+                            modalTitle.textContent = name;
+                            
+                            // 准备基本内容
+                            let html = `
+                                <div class="destination-image" style="background-image: url('https://images.unsplash.com/photo-1500835556837-99ac94a94552?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+                                <div class="destination-info">
+                                    <h4>关于 ${name}</h4>
+                                    <p>${name}是一个迷人的旅游目的地，拥有独特的文化和风景。</p>
+                                </div>
+                            `;
+                            
+                            // 如果目的地数据存在，使用真实数据
+                            if (window.destinationsData && window.destinationsData[id]) {
+                                const data = window.destinationsData[id];
+                                html = `
+                                    <div class="destination-image" style="background-image: url('${data.image}');"></div>
+                                    <div class="destination-info">
+                                        <h4>关于 ${data.name}</h4>
+                                        <p>${data.description}</p>
+                                        
+                                        <h4>推荐景点</h4>
+                                        <ul class="highlights-list">
+                                            ${data.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                `;
+                            }
+                            
+                            modalContent.innerHTML = html;
+                            
+                            // 显示模态框
+                            modal.classList.add('active');
+                            modalOverlay.classList.add('active');
+                        }
+                        
+                        return false;
+                    }, {passive: false});
+                });
+                
+                // 确保模态框关闭按钮工作正常
+                const modalClose = document.querySelector('.modal-close');
+                if (modalClose) {
+                    modalClose.addEventListener('touchend', function() {
+                        modal.classList.remove('active');
+                        modalOverlay.classList.remove('active');
+                    });
+                }
+                
+                if (modalOverlay) {
+                    modalOverlay.addEventListener('touchend', function() {
+                        modal.classList.remove('active');
+                        modalOverlay.classList.remove('active');
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

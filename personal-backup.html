@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - DeepTrip</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/explore.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/airplane-cursor.css">
+    <link rel="stylesheet" href="css/airplane-cursor.css">
+</head>
+<body class="explore-page">
+    <div class="fullscreen-bg"></div>
+    
+    <nav class="side-nav">
+        <ul>
+            <li><a href="create.html" class="nav-item">Create</a></li>
+            <li><a href="explore.html" class="nav-item">Explore</a></li>
+            <li><a href="personal.html" class="nav-item">Personal</a></li>
+            <li><a href="plans.html" class="nav-item">Plans</a></li>
+        </ul>
+    </nav>
+    
+    <a href="index.html" class="back-nav">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5L19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    
+    <main class="content">
+        <h1 class="explore-title">Explore the World</h1>
+        
+        <div class="world-map-container">
+            <div class="world-map">
+                <!-- Map points for different destinations -->
+                <div class="map-point" data-id="1" style="top: 35%; left: 47%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Paris</div>
+                </div>
+                <div class="map-point" data-id="2" style="top: 40%; left: 80%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Tokyo</div>
+                </div>
+                <div class="map-point" data-id="3" style="top: 38%; left: 25%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">New York</div>
+                </div>
+                <div class="map-point" data-id="4" style="top: 75%; left: 85%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Sydney</div>
+                </div>
+                <div class="map-point" data-id="5" style="top: 48%; left: 54%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Cairo</div>
+                </div>
+                <div class="map-point" data-id="6" style="top: 65%; left: 35%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Rio</div>
+                </div>
+                <div class="map-point" data-id="7" style="top: 30%; left: 55%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Rome</div>
+                </div>
+                <div class="map-point" data-id="8" style="top: 28%; left: 50%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">London</div>
+                </div>
+                <div class="map-point" data-id="9" style="top: 45%; left: 78%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Bangkok</div>
+                </div>
+                <div class="map-point" data-id="10" style="top: 42%; left: 15%;">
+                    <div class="point-dot"></div>
+                    <div class="point-label">Los Angeles</div>
+                </div>
+            </div>
+            
+            <div class="map-controls">
+                <button class="map-zoom-in">+</button>
+                <button class="map-zoom-out">-</button>
+                <button class="map-reset">Reset</button>
+            </div>
+            
+            <div class="map-filters">
+                <div class="filter-label">Filter by Region:</div>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-region="all">All</button>
+                    <button class="filter-btn" data-region="Europe">Europe</button>
+                    <button class="filter-btn" data-region="Asia">Asia</button>
+                    <button class="filter-btn" data-region="Americas">Americas</button>
+                    <button class="filter-btn" data-region="Africa">Africa</button>
+                    <button class="filter-btn" data-region="Oceania">Oceania</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Destination detail modal -->
+        <div class="destination-modal">
+            <div class="modal-header">
+                <h2 class="modal-title"></h2>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-content">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary view-guides-btn">View Travel Guides</button>
+                <button class="btn btn-accent view-community-guides-btn">查看其他人留下的攻略</button>
+                <button class="btn btn-secondary create-trip-btn">Create Custom Trip</button>
+            </div>
+        </div>
+        
+        <div class="modal-overlay"></div>
+    </main>
+
+    <!-- Community Guides Modal -->
+    <div class="community-guides-overlay"></div>
+    <div class="community-guides-modal">
+        <div class="community-guides-header">
+            <h2 class="community-guides-title">社区分享的攻略</h2>
+            <button class="community-guides-close">×</button>
+        </div>
+        <div class="community-guides-content">
+            <div class="community-guides-list">
+                <!-- List of community guides will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Guide Detail Modal -->
+    <div class="guide-detail-overlay"></div>
+    <div class="guide-detail-modal">
+        <div class="guide-detail-header">
+            <h2 class="guide-detail-title">攻略详情</h2>
+            <button class="guide-detail-close">×</button>
+        </div>
+        <div class="guide-detail-content">
+            <!-- Guide details will be populated by JavaScript -->
+        </div>
+        <div class="guide-detail-footer">
+            <button class="btn btn-primary collect-guide-btn">收藏攻略</button>
+        </div>
+    </div>
+
+    <script src="js/airplane-cursor.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

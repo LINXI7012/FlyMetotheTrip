@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Editor Test</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f2e8;
+        }
+        
+        h1, h2, h3 {
+            color: #5c5544;
+        }
+        
+        .test-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: rgba(220, 220, 220, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #a2977e;
+            border-radius: 5px;
+            width: 45%;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .button-container {
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #a2977e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background-color: #8a816c;
+        }
+        
+        .test-output {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            min-height: 50px;
+        }
+        
+        .test-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        
+        .test-card h3 {
+            margin-top: 0;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Progress Editor Test</h1>
+    
+    <div class="test-container">
+        <h2>进度编辑功能测试</h2>
+        <p>这个页面测试旅行计划进度编辑功能是否正常工作。点击进度条旁边的编辑按钮应该会弹出编辑对话框。</p>
+        
+        <div class="test-card">
+            <h3>卡片格式进度条</h3>
+            <div class="progress-container" data-plan-id="1001">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+                <div class="progress-text">45% ready</div>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <h3>详情页进度条</h3>
+            <div class="progress-container plan-details" data-plan-id="1002">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+                <div class="progress-text">65% complete</div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="initTest">初始化进度编辑器</button>
+            <button id="saveTestToStorage">保存测试数据到localStorage</button>
+            <button id="loadFromStorage">从localStorage加载数据</button>
+        </div>
+        
+        <div class="test-output" id="testOutput">
+            测试输出将显示在这里...
+        </div>
+    </div>
+    
+    <script src="js/progress-editor.js"></script>
+    <script>
+        // Test setup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Display output message
+            function showOutput(message) {
+                const output = document.getElementById('testOutput');
+                output.innerHTML += `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            }
+            
+            // Initialize button
+            document.getElementById('initTest').addEventListener('click', function() {
+                showOutput('初始化进度编辑器...');
+                if (window.progressEditor && typeof window.progressEditor.init === 'function') {
+                    window.progressEditor.init();
+                    showOutput('进度编辑器初始化完成，点击进度条旁边的编辑按钮测试功能');
+                } else {
+                    showOutput('错误: 找不到 progressEditor.init 方法');
+                }
+            });
+            
+            // Save test data to localStorage
+            document.getElementById('saveTestToStorage').addEventListener('click', function() {
+                try {
+                    const testGuides = [
+                        {
+                            id: 1001,
+                            title: "测试旅行攻略1",
+                            destination: "测试目的地1",
+                            duration: "5",
+                            customProgress: 45
+                        },
+                        {
+                            id: 1002,
+                            title: "测试旅行攻略2",
+                            destination: "测试目的地2",
+                            duration: "7",
+                            customProgress: 65
+                        }
+                    ];
+                    
+                    localStorage.setItem('testGuides', JSON.stringify(testGuides));
+                    showOutput('测试数据已保存到localStorage的testGuides键中');
+                } catch (e) {
+                    showOutput(`保存测试数据出错: ${e.message}`);
+                }
+            });
+            
+            // Load data from localStorage
+            document.getElementById('loadFromStorage').addEventListener('click', function() {
+                try {
+                    const testGuides = JSON.parse(localStorage.getItem('testGuides') || '[]');
+                    showOutput(`从localStorage加载了 ${testGuides.length} 个测试攻略`);
+                    
+                    if (testGuides.length > 0) {
+                        showOutput(`第一个攻略: ${testGuides[0].title}, 进度: ${testGuides[0].customProgress}%`);
+                    }
+                } catch (e) {
+                    showOutput(`加载测试数据出错: ${e.message}`);
+                }
+            });
+            
+            // Register event listener for when progress modal is opened
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.matches('.progress-edit-btn, .progress-edit-btn-card')) {
+                    showOutput('点击了进度编辑按钮');
+                }
+            });
+            
+            // Initialize the editor automatically
+            if (window.progressEditor && typeof window.progressEditor.init === 'function') {
+                setTimeout(() => {
+                    window.progressEditor.init();
+                    showOutput('进度编辑器已自动初始化');
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html> 

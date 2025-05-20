@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重置旅行计划数据</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a2a3a;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            background-color: #2a3a4a;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            margin-top: 0;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+        }
+        
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>旅行计划数据重置工具</h1>
+        <p>此工具将重置您的旅行计划数据，并添加默认的示例旅行计划。</p>
+        <p>如果您的"旅行计划"页面没有显示任何计划，请使用此工具进行修复。</p>
+        
+        <div>
+            <button id="resetBtn" class="btn btn-danger">重置数据</button>
+            <button id="viewBtn" class="btn">查看当前数据</button>
+        </div>
+        
+        <div id="message" class="message"></div>
+        
+        <div id="dataDisplay" style="margin-top: 20px; text-align: left; display: none;">
+            <h3>当前localStorage中的数据:</h3>
+            <pre id="dataContent" style="background-color: #34495e; padding: 10px; border-radius: 5px; overflow: auto; max-height: 300px;"></pre>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <a href="plans.html" class="btn">返回旅行计划页面</a>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            try {
+                // 创建默认旅行攻略数据
+                const defaultGuides = [
+                    {
+                        id: 1001,
+                        createdAt: new Date().toISOString(),
+                        title: "京都之旅",
+                        destination: "京都，日本",
+                        duration: "7",
+                        season: "秋季",
+                        overview: "体验传统日本文化的完美之旅",
+                        highlights: [
+                            "伏见稻荷大社",
+                            "岚山竹林",
+                            "金阁寺",
+                            "祗园区"
+                        ],
+                        dailyPlan: [
+                            { day: 1, activity: "抵达并安顿", location: "京都站" },
+                            { day: 2, activity: "寺庙之旅", location: "东京都" },
+                            { day: 3, activity: "文化探索", location: "祗园和市中心" },
+                            { day: 4, activity: "自然之日", location: "岚山" },
+                            { day: 5, activity: "历史探索", location: "北京都" },
+                            { day: 6, activity: "美食之旅", location: "锦市场及周边" },
+                            { day: 7, activity: "最终观光和离开", location: "南京都" }
+                        ],
+                        notes: "这是一个自动创建的默认旅行计划"
+                    },
+                    {
+                        id: 1002,
+                        createdAt: new Date().toISOString(),
+                        title: "巴黎之旅",
+                        destination: "巴黎，法国",
+                        duration: "5",
+                        season: "春季",
+                        overview: "浪漫之都的艺术与美食探索",
+                        highlights: [
+                            "埃菲尔铁塔",
+                            "卢浮宫",
+                            "巴黎圣母院",
+                            "蒙马特高地"
+                        ],
+                        dailyPlan: [
+                            { day: 1, activity: "抵达并游览塞纳河", location: "市中心" },
+                            { day: 2, activity: "艺术之旅", location: "卢浮宫" },
+                            { day: 3, activity: "城市地标", location: "埃菲尔铁塔" },
+                            { day: 4, activity: "历史探索", location: "巴黎圣母院" },
+                            { day: 5, activity: "购物与离开", location: "香榭丽舍大街" }
+                        ],
+                        notes: "这是一个自动创建的默认旅行计划"
+                    }
+                ];
+                
+                // 清除并重置localStorage
+                localStorage.setItem('savedGuides', JSON.stringify(defaultGuides));
+                
+                // 显示成功消息
+                const message = document.getElementById('message');
+                message.textContent = `数据重置成功！已添加${defaultGuides.length}个默认旅行计划。`;
+                message.className = 'message success';
+                message.style.display = 'block';
+                
+                // 更新显示的数据
+                updateDataDisplay();
+            } catch (error) {
+                // 显示错误消息
+                const message = document.getElementById('message');
+                message.textContent = `重置数据时出错: ${error.message}`;
+                message.className = 'message error';
+                message.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('viewBtn').addEventListener('click', function() {
+            updateDataDisplay();
+            
+            const dataDisplay = document.getElementById('dataDisplay');
+            if (dataDisplay.style.display === 'none') {
+                dataDisplay.style.display = 'block';
+                this.textContent = '隐藏当前数据';
+            } else {
+                dataDisplay.style.display = 'none';
+                this.textContent = '查看当前数据';
+            }
+        });
+        
+        function updateDataDisplay() {
+            const savedGuides = JSON.parse(localStorage.getItem('savedGuides')) || [];
+            document.getElementById('dataContent').textContent = JSON.stringify(savedGuides, null, 2);
+        }
+    </script>
+</body>
+</html> 

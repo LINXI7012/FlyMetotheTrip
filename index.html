@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlyMetotheTrip - Your AI Travel Guide</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home-bg.css">
+    <link rel="stylesheet" href="css/home-transition.css"> <!-- 添加新的过渡样式 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/airplane-cursor.css">
+</head>
+<body class="home">
+    <div class="fullscreen-bg"></div>
+    <div class="transition-overlay"></div>
+    
+    <nav class="side-nav">
+        <ul>
+            <li><a href="create.html" class="nav-item">Create</a></li>
+            <li><a href="explore.html" class="nav-item">Explore</a></li>
+            <li><a href="personal.html" class="nav-item">Personal</a></li>
+            <li><a href="plans.html" class="nav-item">Plans</a></li>
+        </ul>
+    </nav>
+    
+    <main class="content">
+        <h1 class="logo">FlyMetotheTrip</h1>
+    </main>
+
+    <script src="js/airplane-cursor.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/parallax-transition.js"></script> <!-- 添加新的过渡脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 确保只在首页运行
+            if (!document.body.classList.contains('home')) {
+                return;
+            }
+            
+            // 获取过渡图层元素
+            const transitionOverlay = document.querySelector('.transition-overlay');
+            
+            // 设置body高度以启用滚动
+            document.body.style.height = '200vh';
+            document.body.style.overflowY = 'auto';
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', function() {
+                // 计算滚动百分比
+                const maxScroll = document.body.scrollHeight - window.innerHeight;
+                const scrollPercent = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+                
+                // 根据滚动百分比移动过渡图层
+                const translateY = scrollPercent * 100; // 移动距离，可以根据需要调整
+                transitionOverlay.style.transform = `translateY(${translateY}px)`;
+            });
+        });
+        
+    </script>
+</body>
+</html>
+
+
+

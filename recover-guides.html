@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恢复真实旅行攻略数据</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a2a3a;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: #3498db;
+        }
+        
+        .card {
+            background-color: #2a3a4a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 10px 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-success {
+            background-color: #2ecc71;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .guide-card {
+            background-color: #34495e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .guide-title {
+            font-size: 1.2rem;
+            margin-top: 0;
+            color: #f1c40f;
+        }
+        
+        .guide-destination {
+            color: #ecf0f1;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        pre {
+            background-color: #243342;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            color: #ecf0f1;
+        }
+        
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .message.success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+        }
+        
+        .message.error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+        }
+        
+        .message.warning {
+            background-color: rgba(241, 196, 15, 0.2);
+            border: 1px solid #f1c40f;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #2c3e50;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            margin-right: 5px;
+        }
+        
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 修改行程亮点标题样式，使其更加柔和 */
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: rgba(109, 158, 235, 0.9);
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 12px;
+            letter-spacing: 0.5px;
+            border-left: 3px solid rgba(109, 158, 235, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        h3:hover {
+            color: rgba(109, 158, 235, 1);
+            border-left-color: rgba(109, 158, 235, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>旅行攻略恢复工具</h1>
+        <p>此工具将帮助您找回真实生成的旅行攻略数据。</p>
+        
+        <div class="card">
+            <h2>数据诊断</h2>
+            <p>点击下方按钮扫描您的浏览器存储，我们将尝试找回您的真实攻略数据。</p>
+            
+            <div>
+                <button id="scanBtn" class="btn">扫描浏览器存储</button>
+                <button id="restoreBtn" class="btn btn-success" style="display: none;">恢复真实攻略</button>
+            </div>
+            
+            <div id="statusMessage" class="message" style="display: none;"></div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="guides">您的旅行攻略</div>
+            <div class="tab" data-tab="backup">备份数据</div>
+            <div class="tab" data-tab="storage">所有存储数据</div>
+        </div>
+        
+        <div class="tab-content active" data-tab-content="guides">
+            <div class="card">
+                <h2>找到的旅行攻略</h2>
+                <div id="guidesContainer">
+                    <p>请先点击"扫描浏览器存储"按钮查找您的攻略数据。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" data-tab-content="backup">
+            <div class="card">
+                <h2>备份数据</h2>
+                <p>在这里您可以导出和导入您的旅行攻略数据进行备份。</p>
+                
+                <div>
+                    <button id="exportBtn" class="btn">导出所有攻略数据</button>
+                    <button id="importBtn" class="btn">导入攻略数据</button>
+                </div>
+                
+                <input type="file" id="importFile" style="display: none;" accept=".json">
+                
+                <div id="backupMessage" class="message" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <div class="tab-content" data-tab-content="storage">
+            <div class="card">
+                <h2>浏览器存储数据</h2>
+                <p>这里显示您浏览器中的所有localStorage数据。</p>
+                
+                <div id="storageData">
+                    <p>请先点击"扫描浏览器存储"按钮查看数据。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <a href="plans.html" class="btn">返回旅行计划页面</a>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 选项卡切换功能
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有选项卡的活动状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前选项卡的活动状态
+                    this.classList.add('active');
+                    
+                    // 隐藏所有内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // 显示对应内容
+                    const tabName = this.dataset.tab;
+                    document.querySelector(`.tab-content[data-tab-content="${tabName}"]`).classList.add('active');
+                });
+            });
+            
+            // 存储所有找到的攻略数据
+            let foundGuides = [];
+            
+            // 扫描浏览器存储
+            document.getElementById('scanBtn').addEventListener('click', function() {
+                scanStorage();
+            });
+            
+            // 恢复真实攻略
+            document.getElementById('restoreBtn').addEventListener('click', function() {
+                restoreRealGuides();
+            });
+            
+            // 导出攻略数据
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                exportGuides();
+            });
+            
+            // 导入攻略数据
+            document.getElementById('importBtn').addEventListener('click', function() {
+                document.getElementById('importFile').click();
+            });
+            
+            document.getElementById('importFile').addEventListener('change', function(e) {
+                importGuides(e.target.files[0]);
+            });
+            
+            // 扫描存储函数
+            function scanStorage() {
+                const statusMessage = document.getElementById('statusMessage');
+                foundGuides = [];
+                
+                try {
+                    // 先检查当前的savedGuides
+                    const currentGuides = JSON.parse(localStorage.getItem('savedGuides')) || [];
+                    
+                    // 检查其他可能的键
+                    const potentialKeys = [
+                        'savedGuides', 'travelGuides', 'guides', 'plans', 
+                        'travelPlans', 'trips', 'myGuides', 'userGuides'
+                    ];
+                    
+                    let foundData = false;
+                    
+                    // 扫描所有localStorage
+                    let storageHTML = '<h3>找到的localStorage键:</h3><ul>';
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        try {
+                            const value = localStorage.getItem(key);
+                            storageHTML += `<li><strong>${key}</strong> (${value.length} 字符)</li>`;
+                            
+                            // 尝试解析JSON数据
+                            try {
+                                const parsedData = JSON.parse(value);
+                                
+                                // 检查是否可能是旅行攻略数据
+                                if (Array.isArray(parsedData)) {
+                                    // 检查数组中的对象是否有攻略特征
+                                    parsedData.forEach(item => {
+                                        if (
+                                            (item.destination || item.title) && 
+                                            (item.highlights || item.dailyPlan || item.duration)
+                                        ) {
+                                            // 可能是旅行攻略
+                                            if (!foundGuides.some(g => g.id === item.id)) {
+                                                foundGuides.push(item);
+                                                foundData = true;
+                                            }
+                                        }
+                                    });
+                                } else if (
+                                    typeof parsedData === 'object' && 
+                                    (parsedData.destination || parsedData.title) && 
+                                    (parsedData.highlights || parsedData.dailyPlan || parsedData.duration)
+                                ) {
+                                    // 单个攻略对象
+                                    if (!foundGuides.some(g => g.id === parsedData.id)) {
+                                        foundGuides.push(parsedData);
+                                        foundData = true;
+                                    }
+                                }
+                            } catch (jsonError) {
+                                // 不是JSON数据，忽略
+                            }
+                        } catch (error) {
+                            storageHTML += `<li><strong>${key}</strong> (无法读取)</li>`;
+                        }
+                    }
+                    storageHTML += '</ul>';
+                    
+                    // 显示存储数据
+                    document.getElementById('storageData').innerHTML = storageHTML;
+                    
+                    // 显示找到的攻略
+                    displayFoundGuides();
+                    
+                    // 更新状态消息
+                    if (foundData) {
+                        statusMessage.textContent = `已找到 ${foundGuides.length} 个可能的旅行攻略数据。`;
+                        statusMessage.className = 'message success';
+                        document.getElementById('restoreBtn').style.display = 'inline-block';
+                    } else {
+                        statusMessage.textContent = '未找到任何可能的旅行攻略数据。';
+                        statusMessage.className = 'message warning';
+                        document.getElementById('restoreBtn').style.display = 'none';
+                    }
+                    statusMessage.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('扫描存储错误:', error);
+                    statusMessage.textContent = `扫描存储时出错: ${error.message}`;
+                    statusMessage.className = 'message error';
+                    statusMessage.style.display = 'block';
+                }
+            }
+            
+            // 显示找到的攻略
+            function displayFoundGuides() {
+                const guidesContainer = document.getElementById('guidesContainer');
+                
+                if (foundGuides.length === 0) {
+                    guidesContainer.innerHTML = '<p>未找到任何旅行攻略数据。</p>';
+                    return;
+                }
+                
+                let html = '';
+                foundGuides.forEach((guide, index) => {
+                    const title = guide.title || '未命名攻略';
+                    const destination = guide.destination || '未知目的地';
+                    const highlights = guide.highlights ? guide.highlights.join(', ') : '无亮点';
+                    const dailyPlan = guide.dailyPlan ? guide.dailyPlan.length : 0;
+                    
+                    html += `
+                        <div class="guide-card">
+                            <h3 class="guide-title">${title}</h3>
+                            <div class="guide-destination">${destination} | ${dailyPlan}天行程</div>
+                            <p><strong>亮点:</strong> ${highlights}</p>
+                            <button class="btn btn-sm view-details" data-index="${index}">查看详情</button>
+                        </div>
+                    `;
+                });
+                
+                guidesContainer.innerHTML = html;
+                
+                // 添加查看详情按钮事件
+                document.querySelectorAll('.view-details').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        const guide = foundGuides[index];
+                        
+                        // 创建模态框显示攻略详情
+                        const modal = document.createElement('div');
+                        modal.style.position = 'fixed';
+                        modal.style.top = '0';
+                        modal.style.left = '0';
+                        modal.style.width = '100%';
+                        modal.style.height = '100%';
+                        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                        modal.style.display = 'flex';
+                        modal.style.justifyContent = 'center';
+                        modal.style.alignItems = 'center';
+                        modal.style.zIndex = '1000';
+                        
+                        const content = document.createElement('div');
+                        content.style.backgroundColor = '#2a3a4a';
+                        content.style.borderRadius = '10px';
+                        content.style.padding = '20px';
+                        content.style.maxWidth = '800px';
+                        content.style.width = '90%';
+                        content.style.maxHeight = '80vh';
+                        content.style.overflow = 'auto';
+                        
+                        content.innerHTML = `
+                            <h2>${guide.title || '未命名攻略'}</h2>
+                            <p><strong>目的地:</strong> ${guide.destination || '未知'}</p>
+                            <p><strong>时长:</strong> ${guide.duration || '未知'} 天</p>
+                            <p><strong>季节:</strong> ${guide.season || '未知'}</p>
+                            <p><strong>概览:</strong> ${guide.overview || '无概览'}</p>
+                            
+                            <h3>行程亮点</h3>
+                            <ul>
+                                ${guide.highlights ? guide.highlights.map(h => `<li>${h}</li>`).join('') : '<li>无亮点数据</li>'}
+                            </ul>
+                            
+                            <h3>每日行程</h3>
+                            ${guide.dailyPlan ? 
+                                guide.dailyPlan.map(day => `
+                                    <div style="margin-bottom: 10px; padding: 10px; background-color: #34495e; border-radius: 5px;">
+                                        <p><strong>第 ${day.day} 天</strong></p>
+                                        <p>活动: ${day.activity}</p>
+                                        <p>地点: ${day.location}</p>
+                                    </div>
+                                `).join('') 
+                                : '<p>无每日行程数据</p>'
+                            }
+                            
+                            <p><strong>备注:</strong> ${guide.notes || '无备注'}</p>
+                            
+                            <button class="btn" style="margin-top: 20px;">关闭</button>
+                        `;
+                        
+                        modal.appendChild(content);
+                        document.body.appendChild(modal);
+                        
+                        // 关闭按钮事件
+                        modal.querySelector('.btn').addEventListener('click', function() {
+                            document.body.removeChild(modal);
+                        });
+                    });
+                });
+            }
+            
+            // 恢复真实攻略
+            function restoreRealGuides() {
+                if (foundGuides.length === 0) {
+                    const statusMessage = document.getElementById('statusMessage');
+                    statusMessage.textContent = '没有找到可恢复的攻略数据。';
+                    statusMessage.className = 'message warning';
+                    statusMessage.style.display = 'block';
+                    return;
+                }
+                
+                try {
+                    // 确保foundGuides中的ID是唯一的
+                    const uniqueGuides = [];
+                    const seenIds = new Set();
+                    
+                    foundGuides.forEach(guide => {
+                        if (!guide.id) {
+                            guide.id = Date.now() + Math.floor(Math.random() * 1000);
+                        }
+                        
+                        if (!seenIds.has(guide.id)) {
+                            seenIds.add(guide.id);
+                            uniqueGuides.push(guide);
+                        }
+                    });
+                    
+                    // 保存回localStorage
+                    localStorage.setItem('savedGuides', JSON.stringify(uniqueGuides));
+                    
+                    const statusMessage = document.getElementById('statusMessage');
+                    statusMessage.textContent = `成功恢复了 ${uniqueGuides.length} 个旅行攻略！请返回旅行计划页面查看。`;
+                    statusMessage.className = 'message success';
+                    statusMessage.style.display = 'block';
+                } catch (error) {
+                    console.error('恢复攻略错误:', error);
+                    const statusMessage = document.getElementById('statusMessage');
+                    statusMessage.textContent = `恢复攻略时出错: ${error.message}`;
+                    statusMessage.className = 'message error';
+                    statusMessage.style.display = 'block';
+                }
+            }
+            
+            // 导出攻略数据
+            function exportGuides() {
+                try {
+                    // 获取当前的savedGuides或使用找到的攻略
+                    const guidesToExport = JSON.parse(localStorage.getItem('savedGuides')) || foundGuides;
+                    
+                    if (guidesToExport.length === 0) {
+                        const backupMessage = document.getElementById('backupMessage');
+                        backupMessage.textContent = '没有找到可导出的攻略数据。';
+                        backupMessage.className = 'message warning';
+                        backupMessage.style.display = 'block';
+                        return;
+                    }
+                    
+                    // 创建下载
+                    const dataStr = JSON.stringify(guidesToExport, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportName = 'travel_guides_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportName);
+                    linkElement.click();
+                    
+                    const backupMessage = document.getElementById('backupMessage');
+                    backupMessage.textContent = `成功导出 ${guidesToExport.length} 个旅行攻略！`;
+                    backupMessage.className = 'message success';
+                    backupMessage.style.display = 'block';
+                } catch (error) {
+                    console.error('导出攻略错误:', error);
+                    const backupMessage = document.getElementById('backupMessage');
+                    backupMessage.textContent = `导出攻略时出错: ${error.message}`;
+                    backupMessage.className = 'message error';
+                    backupMessage.style.display = 'block';
+                }
+            }
+            
+            // 导入攻略数据
+            function importGuides(file) {
+                const backupMessage = document.getElementById('backupMessage');
+                
+                if (!file) {
+                    backupMessage.textContent = '没有选择文件。';
+                    backupMessage.className = 'message warning';
+                    backupMessage.style.display = 'block';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const importedGuides = JSON.parse(e.target.result);
+                        
+                        if (!Array.isArray(importedGuides)) {
+                            backupMessage.textContent = '导入失败：文件格式不正确。';
+                            backupMessage.className = 'message error';
+                            backupMessage.style.display = 'block';
+                            return;
+                        }
+                        
+                        // 保存到localStorage
+                        localStorage.setItem('savedGuides', JSON.stringify(importedGuides));
+                        
+                        // 更新找到的攻略
+                        foundGuides = importedGuides;
+                        displayFoundGuides();
+                        
+                        backupMessage.textContent = `成功导入 ${importedGuides.length} 个旅行攻略！`;
+                        backupMessage.className = 'message success';
+                        backupMessage.style.display = 'block';
+                    } catch (error) {
+                        console.error('导入攻略错误:', error);
+                        backupMessage.textContent = `导入攻略时出错: ${error.message}`;
+                        backupMessage.className = 'message error';
+                        backupMessage.style.display = 'block';
+                    }
+                };
+                
+                reader.readAsText(file);
+            }
+        });
+    </script>
+</body>
+</html> 

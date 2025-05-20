@@ -1,0 +1,60 @@
+/* 自定义飞机光标样式 */
+body {
+    cursor: none !important; /* 隐藏默认光标，使用!important确保覆盖所有样式 */
+}
+
+#airplane-cursor {
+    position: fixed;
+    width: 24px; /* 减小光标尺寸 */
+    height: 24px;
+    background-image: url('../img/airplane-cursor.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    pointer-events: none; /* 确保光标不会干扰点击事件 */
+    z-index: 10000; /* 确保光标显示在最上层 */
+    transform: translate(-50%, -50%) rotate(0deg); /* 居中光标并设置初始旋转角度 */
+    transition: transform 0.1s ease; /* 平滑旋转过渡 */
+    will-change: transform; /* 优化性能 */
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); /* 添加微弱发光效果 */
+}
+
+/* 鼠标悬停在链接上时的光标样式 */
+a:hover ~ #airplane-cursor,
+button:hover ~ #airplane-cursor,
+input:hover ~ #airplane-cursor,
+select:hover ~ #airplane-cursor,
+textarea:hover ~ #airplane-cursor {
+    transform: translate(-50%, -50%) rotate(15deg) scale(1.2); /* 鼠标悬停时光标旋转并放大 */
+}
+
+/* 鼠标点击时的光标样式 */
+.cursor-clicking #airplane-cursor {
+    transform: translate(-50%, -50%) rotate(-15deg) scale(0.9); /* 点击时光标旋转并缩小 */
+}
+
+/* 拖尾效果 */
+.cursor-trail {
+    position: fixed;
+    width: 6px; /* 减小拖尾尺寸 */
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.6); /* 改为白色半透明 */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    animation: trail-fade 1s forwards;
+}
+
+@keyframes trail-fade {
+    0% {
+        opacity: 0.8;
+        width: 4px;
+        height: 4px;
+    }
+    100% {
+        opacity: 0;
+        width: 2px;
+        height: 2px;
+    }
+} 

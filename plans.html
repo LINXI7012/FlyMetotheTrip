@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Plans - DeepTrip</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/plans.css">
+    <link rel="stylesheet" href="css/travel-guide-details.css">
+    <link rel="stylesheet" href="css/travel-guide-journal-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/airplane-cursor.css">
+</head>
+<body class="plans-page">
+    <div class="fullscreen-bg"></div>
+    
+    <nav class="side-nav">
+        <ul>
+            <li><a href="create.html" class="nav-item">Create</a></li>
+            <li><a href="explore.html" class="nav-item">Explore</a></li>
+            <li><a href="personal.html" class="nav-item">Personal</a></li>
+            <li><a href="plans.html" class="nav-item">Plans</a></li>
+        </ul>
+    </nav>
+    
+    <a href="index.html" class="back-nav">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5L5 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    
+    <main class="content">
+        <div class="plans-header">
+            <h1 class="page-title">Your Travel Plans</h1>
+            <a href="create.html" class="btn btn-primary add-plan-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                创建新旅程
+            </a>
+        </div>
+        
+        <div class="journal-container">
+            <div class="journal-left">
+                <div class="plan-details-content">
+                    <!-- Plan details will be populated by JavaScript -->
+                    <div class="empty-state">
+                        <div class="empty-icon">✈️</div>
+                        <h3>选择一个旅行计划</h3>
+                        <p>请在右侧列表中选择一个旅行计划查看详情</p>
+                    </div>
+                </div>
+            </div>
+            <div class="journal-right">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="upcoming">我的旅行攻略</button>
+                </div>
+                
+                <div class="tab-content active" data-tab-content="upcoming">
+                    <div class="plans-container">
+                        <!-- Plans will be populated by JavaScript -->
+                        <div class="empty-state">
+                            <div class="empty-icon">✈️</div>
+                            <h3>暂无旅行计划</h3>
+                            <p>通过问卷生成或从探索界面收藏的攻略将显示在这里</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="trip-details-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Kyoto Trip</h2>
+                <button class="modal-close">×</button>
+            </div>
+            
+            <div class="modal-content">
+                <div class="trip-info">
+                    <div class="trip-dates">
+                        <div class="date-item">
+                            <div class="date-label">Departure</div>
+                            <div class="date-value">Nov 10, 2024</div>
+                        </div>
+                        <div class="date-separator"></div>
+                        <div class="date-item">
+                            <div class="date-label">Return</div>
+                            <div class="date-value">Nov 17, 2024</div>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-meta">
+                        <div class="meta-item">
+                            <div class="meta-icon">👥</div>
+                            <div class="meta-text">2 Travelers</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">💰</div>
+                            <div class="meta-text">$2,400 Budget</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">🌡️</div>
+                            <div class="meta-text">15-20°C</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="trip-sections">
+                    <div class="section-tabs">
+                        <button class="section-tab active" data-section="timeline">Timeline</button>
+                        <button class="section-tab" data-section="packing">Packing List</button>
+                        <button class="section-tab" data-section="budget">Budget</button>
+                        <button class="section-tab" data-section="contacts">Contacts</button>
+                    </div>
+                    
+                    <div class="section-content active" data-section-content="timeline">
+                        <div class="timeline-container">
+                            <div class="day-timeline">
+                                <div class="timeline-day-header">
+                                    <div class="day-number">Day 1</div>
+                                    <div class="day-title">Arrival & Settling In</div>
+                                    <div class="day-date">Nov 10</div>
+                                </div>
+                                <div class="timeline-items">
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">14:30</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Arrive at Kansai International Airport</div>
+                                            <div class="timeline-notes">Terminal 1, JAL Flight 123</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">16:00</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Check-in at Ryokan Sakura</div>
+                                            <div class="timeline-notes">Traditional Japanese inn with onsen</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">18:30</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Dinner at Pontocho Alley</div>
+                                            <div class="timeline-notes">Traditional Kyoto cuisine</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="day-timeline">
+                                <div class="timeline-day-header">
+                                    <div class="day-number">Day 2</div>
+                                    <div class="day-title">Eastern Kyoto</div>
+                                    <div class="day-date">Nov 11</div>
+                                </div>
+                                <div class="timeline-items">
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">09:00</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Visit Kiyomizu-dera Temple</div>
+                                            <div class="timeline-notes">UNESCO World Heritage site with beautiful views</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">12:30</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Lunch at Ninen-zaka</div>
+                                            <div class="timeline-notes">Traditional teahouses and cafes</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">14:00</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Explore Gion District</div>
+                                            <div class="timeline-notes">Historic geisha district</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-outline btn-small show-more-days">View All 7 Days</button>
+                        </div>
+                    </div>
+                    
+                    <div class="section-content" data-section-content="packing">
+                        <div class="packing-list-container">
+                            <div class="packing-category">
+                                <div class="category-header">
+                                    <h3>Essentials</h3>
+                                    <div class="category-progress">3/5</div>
+                                </div>
+                                <ul class="packing-items">
+                                    <li class="packing-item checked">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Passport</span>
+                                    </li>
+                                    <li class="packing-item checked">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Travel Insurance</span>
+                                    </li>
+                                    <li class="packing-item checked">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Flight Tickets</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Credit Cards</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Japanese Yen</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="packing-category">
+                                <div class="category-header">
+                                    <h3>Clothing</h3>
+                                    <div class="category-progress">2/7</div>
+                                </div>
+                                <ul class="packing-items">
+                                    <li class="packing-item checked">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Light Jacket</span>
+                                    </li>
+                                    <li class="packing-item checked">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Comfortable Walking Shoes</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Socks (7 pairs)</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Underwear (7 pairs)</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">T-shirts (5)</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Jeans/Pants (3)</span>
+                                    </li>
+                                    <li class="packing-item">
+                                        <label class="item-checkbox">
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <span class="item-name">Sweater/Hoodie</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <button class="btn btn-secondary add-item-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Add Item
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="section-content" data-section-content="budget">
+                        <div class="budget-container">
+                            <div class="budget-summary">
+                                <div class="budget-amount">
+                                    <div class="amount-label">Total Budget</div>
+                                    <div class="amount-value">$2,400</div>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="progress-info">
+                                        <span>$1,850 Allocated</span>
+                                        <span>$550 Unallocated</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 77%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-categories">
+                                <div class="budget-category">
+                                    <div class="category-icon" style="background-color: rgba(255, 107, 107, 0.2);">✈️</div>
+                                    <div class="category-details">
+                                        <div class="category-name">Flights</div>
+                                        <div class="category-allocation">$800 (33%)</div>
+                                    </div>
+                                </div>
+                                <div class="budget-category">
+                                    <div class="category-icon" style="background-color: rgba(217, 179, 16, 0.2);">🏨</div>
+                                    <div class="category-details">
+                                        <div class="category-name">Accommodation</div>
+                                        <div class="category-allocation">$600 (25%)</div>
+                                    </div>
+                                </div>
+                                <div class="budget-category">
+                                    <div class="category-icon" style="background-color: rgba(10, 35, 66, 0.2);">🍣</div>
+                                    <div class="category-details">
+                                        <div class="category-name">Food</div>
+                                        <div class="category-allocation">$300 (12.5%)</div>
+                                    </div>
+                                </div>
+                                <div class="budget-category">
+                                    <div class="category-icon" style="background-color: rgba(61, 153, 112, 0.2);">🚆</div>
+                                    <div class="category-details">
+                                        <div class="category-name">Transportation</div>
+                                        <div class="category-allocation">$150 (6.25%)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="currency-converter">
+                                <h3>Currency Converter</h3>
+                                <div class="converter-inputs">
+                                    <div class="converter-input">
+                                        <input type="number" value="1" min="0">
+                                        <select>
+                                            <option value="USD" selected>USD</option>
+                                            <option value="JPY">JPY</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                        </select>
+                                    </div>
+                                    <div class="converter-equals">=</div>
+                                    <div class="converter-input">
+                                        <input type="number" value="142.81" disabled>
+                                        <select>
+                                            <option value="USD">USD</option>
+                                            <option value="JPY" selected>JPY</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-content" data-section-content="contacts">
+                        <div class="contacts-container">
+                            <div class="emergency-contacts">
+                                <h3>Emergency Contacts</h3>
+                                <div class="contact-cards">
+                                    <div class="contact-card">
+                                        <div class="contact-icon">🚨</div>
+                                        <div class="contact-details">
+                                            <div class="contact-name">Emergency Services</div>
+                                            <div class="contact-number">110 (Police) / 119 (Ambulance)</div>
+                                        </div>
+                                    </div>
+                                    <div class="contact-card">
+                                        <div class="contact-icon">🏥</div>
+                                        <div class="contact-details">
+                                            <div class="contact-name">Kyoto University Hospital</div>
+                                            <div class="contact-number">+81 75-751-3111</div>
+                                        </div>
+                                    </div>
+                                    <div class="contact-card">
+                                        <div class="contact-icon">🏛️</div>
+                                        <div class="contact-details">
+                                            <div class="contact-name">US Embassy in Japan</div>
+                                            <div class="contact-number">+81 3-3224-5000</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accommodations-contacts">
+                                <h3>Accommodation</h3>
+                                <div class="contact-card">
+                                    <div class="contact-icon">🏡</div>
+                                    <div class="contact-details">
+                                        <div class="contact-name">Ryokan Sakura</div>
+                                        <div class="contact-address">123 Gion-machi, Higashiyama-ku, Kyoto</div>
+                                        <div class="contact-number">+81 75-561-1234</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline">Share Trip</button>
+                <button class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+        
+        <div class="modal-overlay"></div>
+    </main>
+
+    <!-- 移动端切换视图按钮 -->
+    <button class="mobile-toggle-view" id="mobileToggleView">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6H20M4 12H20M4 18H20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- 旅行攻略详情模态窗口 -->
+    <div class="travel-guide-modal">
+        <div class="travel-guide-header">
+            <h2 class="travel-guide-title">京都之旅</h2>
+            <button class="travel-guide-close">×</button>
+        </div>
+        <div class="travel-guide-content">
+            <div class="travel-guide-container">
+                <!-- Guide content will be populated here -->
+            </div>
+        </div>
+    </div>
+    <div class="travel-guide-overlay"></div>
+
+    <!-- 编辑攻略模态窗口 -->
+    <div class="edit-guide-modal">
+        <!-- Other modal content -->
+        </div>
+    <div class="edit-guide-overlay"></div>
+    
+    <script src="js/html2canvas.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/airplane-cursor.js"></script>
+    <script src="js/progress-editor.js"></script>
+    <script src="js/plans-guide-enhancer.js"></script>
+    
+    <!-- Mobile toggle view script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('mobileToggleView');
+            const journalLeft = document.querySelector('.journal-left');
+            const journalRight = document.querySelector('.journal-right');
+            
+            // Add styles to make the list taller
+        const style = document.createElement('style');
+        style.textContent = `
+                @media (max-width: 768px) {
+                    .journal-right {
+                        min-height: 75vh !important;
+                        max-height: none !important;
+                    }
+                    
+                    .plans-container {
+                        min-height: 65vh !important;
+                        overflow-y: auto !important;
+                    }
+                    
+                    .plan-card {
+                        margin-bottom: 15px !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Remove the toggle button completely from DOM
+            if (toggleBtn) {
+                toggleBtn.style.display = 'none';
+                toggleBtn.remove(); // Remove it from DOM entirely
+            }
+            
+            // Reset to list view function
+            const resetToListView = function() {
+                if (window.innerWidth <= 768) {
+                    journalLeft.style.display = 'none';
+                    journalRight.style.display = 'block';
+                    
+                    // Also clear any selected state
+                    const activeCards = document.querySelectorAll('.plan-card.active');
+                    activeCards.forEach(card => {
+                        card.classList.remove('active');
+                    });
+                    
+                    // Reset the detail content to empty state
+                    const detailsContainer = document.querySelector('.plan-details-content');
+                    if (detailsContainer) {
+                        detailsContainer.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">✈️</div>
+                                <h3>选择一个旅行计划</h3>
+                                <p>请在右侧列表中选择一个旅行计划查看详情</p>
+                            </div>
+                        `;
+                    }
+                    
+                    // Remove URL hash if any
+                    if (window.location.hash) {
+                        history.pushState("", document.title, window.location.pathname);
+                    }
+                }
+            };
+            
+            // Find or create a back link in the detail view
+            const addBackLink = function() {
+                let backLink = document.querySelector('.mobile-back-link');
+                if (!backLink) {
+                    const detailsHeader = journalLeft.querySelector('.plan-details-header');
+                    if (detailsHeader) {
+                        backLink = document.createElement('a');
+                        backLink.className = 'mobile-back-link';
+                        backLink.innerHTML = '&larr; 返回列表';
+                        backLink.style.color = 'var(--text-color)';
+                        backLink.style.textDecoration = 'none';
+                        backLink.style.marginBottom = '10px';
+                        backLink.style.display = 'inline-block';
+                        backLink.style.cursor = 'pointer';
+                        detailsHeader.insertBefore(backLink, detailsHeader.firstChild);
+                        
+                        // Add click event
+                        backLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            resetToListView();
+                        });
+                    }
+                }
+            };
+            
+            // Display function for mobile view
+            function checkMobileView() {
+                if (window.innerWidth <= 768) {
+                    // Always start with list view on mobile
+                    resetToListView();
+                } else {
+                    // On desktop show both panels
+                    journalLeft.style.display = 'block';
+                    journalRight.style.display = 'block';
+                }
+            }
+            
+            // Handle plan card clicks on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && e.target.closest('.plan-card')) {
+                    const planCard = e.target.closest('.plan-card');
+                    const planId = planCard.dataset.planId;
+                    
+                    // Set active class
+                    document.querySelectorAll('.plan-card').forEach(card => {
+                        card.classList.remove('active');
+                    });
+                    planCard.classList.add('active');
+                    
+                    // Set URL hash to track state
+                    window.location.hash = 'plan-' + planId;
+                    
+                    // We need a small delay to make sure the plan details are loaded
+                    setTimeout(function() {
+                        // Add back link to the details view
+                        addBackLink();
+                        // Switch to detail view
+                        journalLeft.style.display = 'block';
+                        journalRight.style.display = 'none';
+                    }, 100);
+                }
+            });
+            
+            // Handle browser back button
+            window.addEventListener('popstate', function(e) {
+                if (window.innerWidth <= 768) {
+                    resetToListView();
+                }
+            });
+            
+            // Check on page load and resize
+            checkMobileView();
+            window.addEventListener('resize', checkMobileView);
+        });
+    </script>
+    
+    <!-- Fix for loading saved guides -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if initPlansPage from main.js has been run
+            setTimeout(function() {
+            const plansContainer = document.querySelector('.plans-container');
+                
+                // If plans container is empty or showing the empty state, try to manually load guides
+                if (plansContainer && (plansContainer.innerHTML.trim() === '' || 
+                    plansContainer.innerHTML.includes('暂无旅行计划'))) {
+                    
+                    console.log('Attempting to manually load saved guides...');
+                    
+                    // Get saved guides from localStorage
+                    let savedGuides = JSON.parse(localStorage.getItem('savedGuides')) || [];
+                    
+                    // If there are no guides, add default guides for testing
+                    if (!Array.isArray(savedGuides) || savedGuides.length === 0) {
+                        console.log('No saved guides found. Adding default guides.');
+                        savedGuides = [
+                            {
+                                id: 1001,
+                                createdAt: new Date().toISOString(),
+                                title: "京都之旅",
+                                destination: "京都，日本",
+                                duration: "7",
+                                season: "秋季",
+                                overview: "体验传统日本文化的完美之旅",
+                                highlights: [
+                                    "伏见稻荷大社",
+                                    "岚山竹林",
+                                    "金阁寺",
+                                    "祗园区"
+                                ],
+                                dailyPlan: [
+                                    { day: 1, activity: "抵达并安顿", location: "京都站" },
+                                    { day: 2, activity: "寺庙之旅", location: "东京都" },
+                                    { day: 3, activity: "文化探索", location: "祗园和市中心" }
+                                ],
+                                notes: "这是一个自动创建的默认旅行计划"
+                            }
+                        ];
+                            localStorage.setItem('savedGuides', JSON.stringify(savedGuides));
+                        }
+                    
+                    console.log('Found ' + savedGuides.length + ' guides');
+                    
+                    // Display guides manually if they exist
+                    if (savedGuides.length > 0) {
+            let plansHTML = '';
+            
+                        savedGuides.forEach(guide => {
+                            // Create plan HTML
+                plansHTML += `
+                    <div class="plan-card" data-plan-id="${guide.id}">
+                        <div class="plan-header">
+                                        <h3>${guide.title || guide.destination}</h3>
+                                        <div class="plan-dates">创建于: ${new Date(guide.createdAt || new Date()).toLocaleDateString()}</div>
+                        </div>
+                        <div class="plan-progress">
+                            <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                                        <div class="progress-text">已保存的旅行攻略</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+                        // Update the plans container
+            plansContainer.innerHTML = plansHTML;
+            
+                        // Add click event to plan cards
+            const planCards = document.querySelectorAll('.plan-card');
+            planCards.forEach(card => {
+                card.addEventListener('click', function() {
+                                const planId = parseInt(this.dataset.planId);
+                                
+                                // Remove active class from all cards
+                    planCards.forEach(c => c.classList.remove('active'));
+                    
+                                // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                                // Find guide data
+                                const guide = savedGuides.find(g => g.id == planId);
+                    
+                    if (guide) {
+                                    // Display guide details
+                                    if (typeof showTravelGuideDetails === 'function') {
+                                        showTravelGuideDetails(guide);
+            } else {
+                                        // Fall back to simple display
+                                        const detailsContainer = document.querySelector('.plan-details-content');
+                                        if (detailsContainer) {
+                                            detailsContainer.innerHTML = `
+                <div class="plan-details">
+                    <div class="plan-details-header">
+                        <h2>${guide.title || guide.destination}</h2>
+                                                        <div class="plan-details-dates">时长: ${guide.duration}天</div>
+                    </div>
+                    <div class="plan-details-body">
+                        <div class="plan-details-section">
+                                                            <h3>旅行概览</h3>
+                                                            <p>${guide.overview || '暂无概览'}</p>
+                                </div>
+                                                        ${guide.highlights ? `
+                        <div class="plan-details-section">
+                                                            <h3>行程亮点</h3>
+                                                            <ul class="highlights-list">
+                                                                ${guide.highlights.map(h => `<li>${h}</li>`).join('')}
+                            </ul>
+                        </div>
+                                                        ` : ''}
+                            </div>
+                    </div>
+                `;
+            }
+                                    }
+                                }
+                            });
+            });
+            
+                        // Select first card by default
+                        if (planCards.length > 0) {
+                            planCards[0].click();
+                        }
+                    }
+                }
+            }, 1000); // Give main.js time to initialize first
+        });
+    </script>
+
+    <!-- Fix for travel guide modal navigation -->
+    <script>
+        // Override the closeTravelGuideModal function to ensure mobile guide list is shown
+        document.addEventListener('DOMContentLoaded', function() {
+            // Store original function implementation once DOM is loaded
+            const originalGlobalCloseModal = window.closeTravelGuideModal;
+            
+            // Create a better implementation that avoids circular references
+            window.closeTravelGuideModal = function() {
+                // First close the modal UI elements directly
+                const modal = document.querySelector('.travel-guide-modal');
+                const overlay = document.querySelector('.travel-guide-overlay');
+                
+                if (modal) modal.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                
+                // Then handle mobile-specific behavior without calling the original function
+                if (window.innerWidth <= 768) {
+                    const journalLeft = document.querySelector('.journal-left');
+                    const journalRight = document.querySelector('.journal-right');
+                    
+                    if (journalLeft && journalRight) {
+                        // Hide the guide details and show the guide list
+                        journalLeft.style.display = 'none';
+                        journalRight.style.display = 'block';
+                        
+                        // Remove any active states from cards
+                        const activeCards = document.querySelectorAll('.plan-card.active');
+                        activeCards.forEach(card => {
+                            card.classList.remove('active');
+                        });
+                        
+                        // Clear the URL hash if exists
+                        if (window.location.hash) {
+                            history.pushState("", document.title, window.location.pathname);
+                        }
+                        
+                        console.log('Guide modal closed, showing guide list');
+                    }
+                }
+            };
+            
+            // Fix for travel guide modal close button
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('travel-guide-close')) {
+                    e.preventDefault();
+                    window.closeTravelGuideModal();
+                }
+            });
+            
+            // Fix for travel guide modal overlay
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('travel-guide-overlay')) {
+                    e.preventDefault();
+                    window.closeTravelGuideModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

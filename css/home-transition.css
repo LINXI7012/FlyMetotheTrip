@@ -1,0 +1,28 @@
+.transition-overlay {
+    position: absolute !important; /* 使用!important覆盖原有样式 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/过渡.png'); /* 保持原有图片 */
+    background-size: cover;
+    background-position: center bottom;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 修改body样式以支持滚动 */
+body.home {
+    height: 200vh; /* 两倍视口高度，允许滚动 */
+    overflow-y: auto; /* 启用垂直滚动 */
+}
+
+/* 调整内容区域定位，确保它保持在视口中 */
+body.home .content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+}
